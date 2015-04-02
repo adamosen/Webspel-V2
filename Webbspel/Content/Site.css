@@ -1,0 +1,79 @@
+﻿#dropdown {
+     float: left;
+     margin: auto;
+     padding: 0;
+     width: 100%;
+     box-shadow: 7px 7px 5px 0px rgba(0, 0, 0, 0.75);
+}
+#dropdown li {
+     background: #242424 ;
+     float: left;
+     list-style: none;
+     padding: 0;
+     position: relative;
+     height:30px;
+     line-height: 30px;
+     width:240px;
+     transition: ease-in 0.05s;
+     text-align: center;
+}
+#dropdown li:hover {
+    background: #44B6CA;
+}
+#dropdown li a {
+     text-decoration:none;
+     color: white;
+     display: block;
+}
+#dropdown ul {
+     background: #FFFFFF;
+     margin: 0;
+     padding: 0;
+     position: absolute;
+     top: 30px;
+     z-index: 500;
+     visibility: hidden;
+     opacity: 0;
+     transition: opacity 0.15s linear;
+     box-shadow: 7px 7px 5px 0px rgba(0, 0, 0, 0.75);
+}
+#dropdown ul {
+    position: absolute;
+}
+#dropdown li:hover ul {
+     visibility: visible;
+     opacity: 1;
+}
+#selectStyle select{
+    background-color: #242424;
+    color: red;
+    width: 65px;
+    padding: 5px;
+    font-size: 16px;
+    line-height: 1;
+    border: 1px solid black;
+    border-radius: 5px;
+    height: 34px;
+}
+select option{
+    background: transparent;
+}
+body{
+    margin: auto;
+    width: 960px;
+}
+#wrapper
+{
+    margin: auto;
+    width: 100%;
+    height: 100vh;
+    /*background-image: url('../img/micro_carbon.png');*/
+    color: white;
+}
+h1{
+    width: 800px;
+    height:118px;
+    background-image: url('../../Content/img/questforthenorthpole_logo.png');
+    margin-bottom: 0px;
+    font-size: 0px;
+}

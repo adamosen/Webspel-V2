@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Quest for the North Pole</title>
+    <script type="text/javascript" src="~/Scripts/phaser.min.js"></script>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <div id="wrapper">
+        <h1>Quest for the North Pole</h1>
+        <nav>
+            <ul id="dropdown">
+                <li><a class="active" href="index.html">Start</a></li>
+                <li>
+                    <a href="#">Highscore</a>
+                    <ul>
+                        <li><a href="#">Local</a></li>
+                        <li><a href="#">Top 10</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Om</a></li>
+                <li><a href="#">Kontakt</a></li>
+            </ul>
+
+
+        </nav>
+        @RenderBody()
+    </div>
+
+        
+</body>
+</html>

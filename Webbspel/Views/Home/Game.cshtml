@@ -1,0 +1,31 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>PlatformerGame</title>
+    @Styles.Render("~/Content/Site.css")
+    <!--<script type="text/javascript" src="@Url.Content("../js/phaser.min.js")"></script>-->
+    @Scripts.Render("~/Scripts/phaser.min.js")
+    
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="phaser-game">
+        <!--<script type="text/javascript" src="@Url.Content("game1.js")"></script>-->
+        @Scripts.Render("~/Scripts/game1.js")
+    </div>
+
+    
+
+</body>
+</html>
