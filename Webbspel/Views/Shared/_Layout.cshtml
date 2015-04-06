@@ -14,16 +14,16 @@
         <h1>Quest for the North Pole</h1>
         <nav>
             <ul id="dropdown">
-                <li><a class="active" href="index.html">Start</a></li>
+                <li>@Html.ActionLink("Hem", "Index", "Home")</li>
                 <li>
-                    <a href="#">Highscore</a>
+                    @Html.ActionLink("Highscore", "Highscore", "Home")
                     <ul>
-                        <li><a href="#">Local</a></li>
-                        <li><a href="#">Top 10</a></li>
+                        <li>@Html.ActionLink("Lokal", "Local", "Home")</li>
+                        <li>@Html.ActionLink("Top 10", "Top10", "Home")</li>
                     </ul>
                 </li>
-                <li><a href="#">Om</a></li>
-                <li><a href="#">Kontakt</a></li>
+                <li>@Html.ActionLink("Om", "About", "Home")</li>
+                <li>@Html.ActionLink("Kontakt", "Contact", "Home")</li>
             </ul>
 
 

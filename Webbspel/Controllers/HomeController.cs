@@ -14,14 +14,22 @@ namespace Webbspel.Controllers
         }
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
-
             return View();
         }
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
-
+            return View();
+        }
+        public ActionResult Local()
+        {
+            return View();
+        }
+        public ActionResult Highscore()
+        {
+            return View();
+        }
+        public ActionResult Top10()
+        {
             return View();
         }
     }
