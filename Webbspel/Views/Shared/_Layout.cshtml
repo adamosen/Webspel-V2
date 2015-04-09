@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using System.Web.Mvc.Html;
+@using Webbspel.Helpers;
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -14,21 +16,23 @@
         <h1>Quest for the North Pole</h1>
         <nav>
             <ul id="dropdown">
-                <li>@Html.ActionLink("Hem", "Index", "Home")</li>
+                <li>@Html.MenuLink("Hem", "Index", "Home")</li>
                 <li>
-                    @Html.ActionLink("Highscore", "Highscore", "Home")
+                    @Html.MenuLink("Highscore", "Highscore", "Home")
                     <ul>
-                        <li>@Html.ActionLink("Lokal", "Local", "Home")</li>
-                        <li>@Html.ActionLink("Top 10", "Top10", "Home")</li>
+                        <li>@Html.MenuLink("Lokal", "Local", "Home")</li>
+                        <li>@Html.MenuLink("Top 10", "Top10", "Home")</li>
                     </ul>
                 </li>
-                <li>@Html.ActionLink("Om", "About", "Home")</li>
-                <li>@Html.ActionLink("Kontakt", "Contact", "Home")</li>
+                <li>@Html.MenuLink("Om", "About", "Home")</li>
+                <li>@Html.MenuLink("Kontakt", "Contact", "Home")</li>
             </ul>
 
 
         </nav>
-        @RenderBody()
+        <div id="content">
+            @RenderBody()
+        </div>
     </div>
 
         
