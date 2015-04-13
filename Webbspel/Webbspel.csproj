@@ -169,6 +169,13 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\assets\gameover.png" />
+    <Content Include="Content\assets\gametitle.png" />
+    <Content Include="Content\assets\higher.png" />
+    <Content Include="Content\assets\loading.png" />
+    <Content Include="Content\assets\lower.png" />
+    <Content Include="Content\assets\numbers.png" />
+    <Content Include="Content\assets\play.png" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\gameassets\blue.png" />
@@ -221,6 +228,11 @@
     <Content Include="Scripts\phaser.min.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\src\boot.js" />
+    <Content Include="Scripts\src\gameover.js" />
+    <Content Include="Scripts\src\gametitle.js" />
+    <Content Include="Scripts\src\preload.js" />
+    <Content Include="Scripts\src\thegame.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -241,6 +253,7 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Local.cshtml" />
     <Content Include="Views\Home\Highscore.cshtml" />
+    <Content Include="Views\Home\tutorial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

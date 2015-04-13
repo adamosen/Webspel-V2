@@ -32,5 +32,9 @@ namespace Webbspel.Controllers
         {
             return View();
         }
+        public ActionResult tutorial()
+        {
+            return View();
+        }
     }
 }
