@@ -254,6 +254,7 @@
     <Content Include="Views\Home\Local.cshtml" />
     <Content Include="Views\Home\Highscore.cshtml" />
     <Content Include="Views\Home\tutorial.cshtml" />
+    <Content Include="Views\Home\GameNPQ.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

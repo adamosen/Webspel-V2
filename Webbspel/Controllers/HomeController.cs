@@ -36,5 +36,9 @@ namespace Webbspel.Controllers
         {
             return View();
         }
+        public ActionResult GameNPQ()
+        {
+            return View();
+        }
     }
 }
