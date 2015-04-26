@@ -36,11 +36,15 @@ namespace Webbspel.Controllers
         {
             return View();
         }
-<<<<<<< HEAD
+
         public ActionResult GameNPQ()
-=======
+        {
+            return View();
+        }
+
+
         public ActionResult Speltest()
->>>>>>> origin/master
+
         {
             return View();
         }

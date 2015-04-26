@@ -1,26 +1,55 @@
-var theGame = function (game)
-{
-    var player;
-    var cursors;
-    var pickups;
-    var food;
-    var score = 0;
-    var scoreText;
-    var map;
-    var backgroundlayer;
-    var groundlayer;
 
-	//spriteNumber = null;
-	//number = 0;
-	//workingButtons = true;
-	//higher = true;
-	//score = 0;
-}
+var theGame = function (game) { };
+
+'use strict';
+var Player = function (game, x, y) {
+
+    Phaser.Sprite.call(this, game, x, y, 'bear');
+
+    this.game.physics.enable(this, Phaser.Physics.ARCADE);
+    
+    //this.maxVelocityX = 200;
+    //this.maxVelocityY = 600;
+    //this.minHealth = 1;
+    //this.health = 10;
+    //this.hittingEnemy = false;
+
+    //this.smoothed = false;
+    this.body.collideWorldBounds = true;
+    this.body.gravity.y = 400;
+    //this.anchor.setTo(0.5, 0.5);
+    //this.body.setSize(64, 100, 25, 6);
+
+    this.animations.add('left', [1, 2, 3, 4, 5], 12, true);
+    this.animations.add('right', [1, 2, 3, 4, 5], 12, true);
+    this.body.tilePadding.set(32);
+    this.game.add.existing(this);
+
+};
+        Player.prototype = Object.create(Phaser.Sprite.prototype);
+        Player.prototype.constructor = Player;
+
+        Player.prototype.moveRight = function ()
+        {
+            this.body.velocity.x = 150;
+            this.animations.play('right');
+        };
+
+var player = this.player;
+var cursors;
+var pickups;
+var food;
+var score = 0;
+var scoreText;
+var map;
+var backgroundlayer;
+var groundlayer;
+
 
 theGame.prototype = {
 
-    create: function ()
-    {
+    create: function () {
+        
         //physics+bgcolor
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
         this.game.stage.backgroundColor = '#33CCFF';
@@ -29,63 +58,49 @@ theGame.prototype = {
         map.addTilesetImage('tiles2');
         map.addTilesetImage('tree');
         map.addTilesetImage('items');
+        map.setCollisionBetween(1, 100);
         ////groundlayer
-        //groundlayer = map.createLayer('ground');
-        //groundlayer.resizeWorld();
-        //groundlayer.enableBody = true;
-        ////player
-        //player = this.game.add.sprite(32, game.world.height, 'bear');
-        //this.game.physics.arcade.enable(player);
-        //this.game.camera.follow(player);
-        //player.body.collideWorldBounds = true;
-        //player.animation.add('left', [1, 2, 3, 4, 5], 10, true);
-        //player.animation.add('right', [5, 4, 3, 2, 1], 10, true);
-        ////pickups
-        //map.setCollisionBetween(1, 100);
+        groundlayer = map.createLayer('ground');
+        groundlayer.resizeWorld();
+        groundlayer.enableBody = true;
 
-		//number = Math.floor(Math.random()*10);
-		//spriteNumber = this.game.add.sprite(400,240,"numbers");
-		//spriteNumber.anchor.setTo(0.5,0.5);
-		//spriteNumber.frame = number;	
-		//var higherButton = this.game.add.button(400,100,"higher",this.clickedHigher,this);
-		//higherButton.anchor.setTo(0.5,0.5);
-		//var lowerButton = this.game.add.button(400,380,"lower",this.clickedLower,this);
-		//lowerButton.anchor.setTo(0.5,0.5);	
-	}
-	//clickedHigher: function(){
-	//	higher=true;
-	//	this.tweenNumber(true);
-	//},
-	//clickedLower: function(){
-	//	higher=false;
-	//	this.tweenNumber(false);
-	//},
-	//tweenNumber: function(higher){
-	//	if(workingButtons){
-	//		workingButtons=false;
-	//		var exitTween = this.game.add.tween(spriteNumber);
-	//          exitTween.to({x:420},500);
-	//          exitTween.onComplete.add(this.exitNumber,this);
-	//          exitTween.start();
-	//     }
-	//},
-	//exitNumber: function(){
-	//	spriteNumber.x = -180;
-	//     spriteNumber.frame = Math.floor(Math.random()*10);
-	//     var enterTween = this.game.add.tween(spriteNumber);
-	//     enterTween.to({x:160},500);
-	//     enterTween.onComplete.add(this.enterNumber,this);
-	//     enterTween.start();
-	
-	//},
-	//enterNumber: function(){
-	//	workingButtons=true;
-	//	if((higher && spriteNumber.frame<number)||(!higher && spriteNumber.frame>number)){
-	//		this.game.state.start("GameOver",true,false,score);	
-	//	}
-	//	else{  
-	//		score++;
-	//		number = spriteNumber.frame;
-	//	}	
-	//}
+        this.player = new Player(this.game, 32, 300);
+
+        this.game.camera.follow(this.player);
+
+    },
+
+    update: function ()
+    {
+        this.game.physics.arcade.collide(this.player, groundlayer);
+
+        //Kontroll
+        cursors = this.game.input.keyboard.createCursorKeys();
+        this.player.body.velocity.x = 0;
+        if (cursors.left.isDown)
+        {
+            this.player.body.velocity.x = -150;
+            this.player.animations.play('left');
+
+        }
+        else if (cursors.right.isDown)
+        {
+            //this.player.prototype.moveRight();
+            this.player.body.velocity.x = 150;
+            this.player.animations.play('right');
+
+        }
+        else
+        {
+            //player.animations.stop();
+            this.player.frame = 0;
+        }
+
+        if (cursors.up.isDown && this.player.body.onFloor()) {
+            this.player.body.velocity.y = -250;
+        }
+
+
+    }
+
 }
