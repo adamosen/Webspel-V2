@@ -1,4 +1,28 @@
-﻿#dropdown {
+﻿
+#box {
+     border-style: solid;
+     Border-width: 5px;
+     border-color: black;
+     Padding: 20px;
+     height: 500px; 
+     background-color: #44B6CA;
+     color:black; 
+      
+}
+
+#Login {
+    padding:50px;
+    float:right;
+}
+#Skapa {
+    padding:50px;
+    float:left;
+}
+#header {
+    float:right;
+    margin: auto;
+}
+#dropdown {
      float: left;
      margin: auto;
      padding: 0;
