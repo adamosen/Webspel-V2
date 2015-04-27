@@ -13,8 +13,21 @@
 </head>
 <body>
     <header>
-        <input id="Submit1" type="submit" value="Logga in/Skapa ny profil" />
-        <input id="Submit1" type="submit" value="Logga ut" />
+        <input class="Submit1" type="submit" value="Logga in/Skapa ny profil" />
+        <input class="Submit1" type="submit" value="Logga ut" />
+        <div style="width: auto; background-color: #728ea7">
+            @if (Request.IsAuthenticated)
+            {
+                <strong>@Html.Encode(User.Identity.Name)</strong>
+                @Html.ActionLink("Log out", "Logout", "User")
+            }
+            else
+            {
+                @Html.ActionLink("Register", "Register", "User")
+                <span> | </span>
+                @Html.ActionLink("Log in", "Login", "User")
+            }
+        </div>
     </header>
     <div id="wrapper">
         <h1>Quest for the North Pole</h1>

@@ -159,16 +159,23 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\HTMLHelper.cs" />
+    <Compile Include="Helpers\SHA1.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\UserDatabase.mdf" />
+    <Content Include="App_Data\UserDatabase_log.ldf">
+      <DependentUpon>UserDatabase.mdf</DependentUpon>
+    </Content>
     <Content Include="Content\assets\gameover.png" />
     <Content Include="Content\assets\gametitle.png" />
     <Content Include="Content\assets\higher.png" />
@@ -255,9 +262,9 @@
     <Content Include="Views\Home\Highscore.cshtml" />
     <Content Include="Views\Home\tutorial.cshtml" />
     <Content Include="Views\Home\GameNPQ.cshtml" />
+    <Content Include="Views\User\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Views\Account\" />
   </ItemGroup>
   <ItemGroup>
