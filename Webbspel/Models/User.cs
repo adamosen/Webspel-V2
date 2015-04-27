@@ -25,8 +25,7 @@ namespace Webbspel.Models
 
         public bool IsValid(string _username, string _password)
         {
-            using (var cn = new SqlConnection(@"Data Source=(LocalDB)\v11.0;AttachDbFilename" +
-                @"=|DataDirectory|\UserDatabase.mdf';Integrated Security=True"))
+            using (var cn = new SqlConnection(@"Data Source=(LocalDB)\v11.0;AttachDbFilename='|DataDirectory|\Database1.mdf';Integrated Security=True"))
             {
                 string _sql = @"Select [Username] FROM [dbo].[System_Users] " +
                     @"WHERE [Username] = @u AND [Password] = @p";
@@ -35,7 +34,7 @@ namespace Webbspel.Models
                     .Add(new SqlParameter("@u", SqlDbType.NVarChar))
                     .Value = _username;
                 cmd.Parameters
-                    .Add(new SqlParameter("@u", SqlDbType.NVarChar))
+                    .Add(new SqlParameter("@p", SqlDbType.NVarChar))
                     .Value = Helpers.SHA1.Encode(_password);
                 cn.Open();
                 var reader = cmd.ExecuteReader();
