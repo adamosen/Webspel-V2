@@ -1,0 +1,117 @@
+﻿<!doctype html> 
+<html lang="en"> 
+<head> 
+	<meta charset="UTF-8" />
+	<title>Phaser - Making your first game, part 3</title>
+	<script type="text/javascript" src="js/phaser.min.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<script type="text/javascript">
+
+var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+
+
+var enemy;
+
+var map;
+var backgroundlayer;
+var groundlayer;
+
+function preload() {
+
+    // detta för att ladda tilen
+    game.load.tilemap('map', 'assets/tile2.json', null, Phaser.Tilemap.TILED_JSON);
+
+    // detta för att ladda bilderna i tilen som är supermario i detta fallet
+    game.load.image('super_mario', 'assets/super_mario.png');
+
+    //lägger till en diamant som fiende
+    game.load.image('diamond', 'assets/diamond.png');
+}
+
+function create() {
+
+    game.physics.startSystem(Phaser.Physics.ARCADE);
+    // färg på bakgrund
+    //game.stage.backgroundColor = '#45CCFF';
+    
+    //lägger till banan
+    map = game.add.tilemap('map');
+    //lägger till bilderna från mario bilden
+    map.addTilesetImage('super_mario');
+
+    //till bakgrunden
+    //backgroundlayer = map.createLayer('background');
+
+    //backgroundlayer.resizeWorld();
+
+    // till golvet
+    groundlayer = map.createLayer('ground');
+
+    groundlayer.resizeWorld();
+
+    groundlayer.enableBody = true;
+  
+    //groundlayer.body.immovable = true;
+
+    //Gravitation
+    //game.physics.arcade.gravity.y = 250;
+
+
+    //allt som har med enimies att göra
+    
+
+
+    // lägger till en grupp av fiende
+    enemy = game.add.group();
+
+    //skapar fiende
+    enemy.create(200, 300, 'diamond');
+
+
+    enemy = game.add.sprite(32,100, 'diamond');
+
+
+    ////lägger till 10 fiender
+    //for(var i=0   ;i<10  ;i++)
+    //{
+    ////    //skapar en ny sprite random i spelet i både x och y-led
+    ////    enemy.create(game.world.randomX +100, game.world.randomY-400, 'diamond');
+
+    //    //skapar fiende från skapafiende funktionen
+    //    createEnemies();
+
+    //}
+
+    game.physics.arcade.enable(enemy);
+    enemy.body.tilePadding.set(32);
+    enemy.body.collideWorldBounds = true;
+    enemy.body.bounce.y = 0.0;
+    enemy.body.gravity.y = 400;
+
+
+
+
+    map.setCollisionBetween(1, 100);
+}
+
+function update() {
+    game.physics.arcade.collide(enemy, groundlayer);
+}
+
+//function createEnemies() {
+//    enemy.create(360 + Math.random() * 200, 120 + Math.random() * 200, 'diamond');
+
+//}
+
+
+</script>
+
+</body>
+</html>
