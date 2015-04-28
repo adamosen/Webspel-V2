@@ -6,7 +6,7 @@
          "name":"objects",
          "objects":[
                 {
-                 "gid":149,
+                 "gid":201,
                  "height":0,
                  "id":5,
                  "name":"burger",
@@ -22,7 +22,7 @@
                  "y":432
                 }, 
                 {
-                 "gid":150,
+                 "gid":202,
                  "height":0,
                  "id":6,
                  "name":"hotdog",
@@ -61,7 +61,7 @@
          "name":"Object Layer 2",
          "objects":[
                 {
-                 "gid":154,
+                 "gid":206,
                  "height":0,
                  "id":7,
                  "name":"",
@@ -96,7 +96,7 @@
          "firstgid":1,
          "image":"..\/tiles2.png",
          "imageheight":32,
-         "imagewidth":1184,
+         "imagewidth":1600,
          "margin":0,
          "name":"tiles2",
          "properties":
@@ -108,7 +108,7 @@
          "tilewidth":16
         }, 
         {
-         "firstgid":149,
+         "firstgid":201,
          "image":"..\/items1.png",
          "imageheight":32,
          "imagewidth":192,

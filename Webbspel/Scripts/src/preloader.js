@@ -13,16 +13,14 @@ preload.prototype = {
 		this.game.load.image("lower", "/Content/assets/lower.png");
 		this.game.load.image("gameover", "/Content/assets/gameover.png");
 
-		this.game.load.tilemap('map', '/Content/gameassets/levels/level3.json', null, Phaser.Tilemap.TILED_JSON);
+		this.game.load.tilemap('map', '/Content/gameassets/levels/level2.json', null, Phaser.Tilemap.TILED_JSON);
 
 		this.game.load.image('burger', '/Content/gameassets/burger.png');
-		this.game.load.image('tiles2', '/Content/gameassets/tiles3.png');
+		this.game.load.image('tiles2', '/Content/gameassets/tilestest1.png');
 		this.game.load.image('tree', '/Content/gameassets/tree.png');
 
-		this.game.load.spritesheet('water', '/Content/gameassets/watertiles.png', 32, 32);
-		this.game.load.spritesheet('lava', '/Content/gameassets/lavatiles.png', 32, 32);
-		this.game.load.spritesheet('items1', '/Content/gameassets/items1.png', 32, 32);
-		this.game.load.spritesheet('items2', '/Content/gameassets/items1.png', 32, 32);
+		this.game.load.spritesheet('tiles1', '/Content/gameassets/tilestest1.png',32,32);
+		this.game.load.spritesheet('items', '/Content/gameassets/items.png', 32, 32);
 		this.game.load.spritesheet('bear', '/Content/gameassets/charsprites.png', 32, 64);
 	},
   	create: function(){
