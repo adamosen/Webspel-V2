@@ -13,17 +13,22 @@ preload.prototype = {
 		this.game.load.image("lower", "/Content/assets/lower.png");
 		this.game.load.image("gameover", "/Content/assets/gameover.png");
 
-		this.game.load.tilemap('map', '/Content/gameassets/levels/level3.json', null, Phaser.Tilemap.TILED_JSON);
+		this.game.load.tilemap('map', '/Content/gameassets/levels/leveljun.json', null, Phaser.Tilemap.TILED_JSON);
 
 		this.game.load.image('burger', '/Content/gameassets/burger.png');
-		this.game.load.image('tiles2', '/Content/gameassets/tiles3.png');
+		this.game.load.image('tiles2', '/Content/gameassets/tiles2.png');
+		this.game.load.image('tiles2dark', '/Content/gameassets/tiles2dark.png');
 		this.game.load.image('tree', '/Content/gameassets/tree.png');
+		this.game.load.image('moveplatform','/Content/gameassets/move_platform.png');
 
 		this.game.load.spritesheet('water', '/Content/gameassets/watertiles.png', 32, 32);
 		this.game.load.spritesheet('lava', '/Content/gameassets/lavatiles.png', 32, 32);
 		this.game.load.spritesheet('items1', '/Content/gameassets/items1.png', 32, 32);
-		this.game.load.spritesheet('items2', '/Content/gameassets/items1.png', 32, 32);
+		this.game.load.spritesheet('items2', '/Content/gameassets/items2.png', 32, 32);
 		this.game.load.spritesheet('bear', '/Content/gameassets/charsprites.png', 32, 64);
+
+	    //audio
+		this.game.load.audio("music1", "/Content/gameassets/music/Jazz Jackrabbit 2 - Medival Jam.m4a");
 	},
   	create: function(){
 		this.game.state.start("GameTitle");
