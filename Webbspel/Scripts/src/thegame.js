@@ -10,23 +10,20 @@ var Player = function (game, x, y)
 
     this.game.physics.enable(this, Phaser.Physics.ARCADE);
     
-    //this.maxVelocityX = 200;
-    //this.maxVelocityY = 600;
-    //this.minHealth = 1;
-    //this.health = 10;
+    this.maxVelocityX = 200;
+    this.maxVelocityY = 250;
+    this.minHealth = 1;
+    this.health = 10;
     //this.hittingEnemy = false;
+    this.body.setSize(25, 64, 0, 0);
 
-    //this.smoothed = false;
     this.body.collideWorldBounds = true;
     this.body.gravity.y = 400;
-    //this.anchor.setTo(0.5, 0.5);
-    //this.body.setSize(64, 100, 25, 6);
 
-    // Set Anchor to the center of your sprite
+    // Set ankarpunkt i centrum
     this.anchor.setTo(0.5, 0.5);
 
-    this.animations.add('left', [1, 2, 3, 4, 5], 12, true);
-    this.animations.add('right', [1, 2, 3, 4, 5], 12, true);
+    this.animations.add('walk', [1, 2, 3, 4, 5], 12, true);
     this.body.tilePadding.set(32);
     this.game.add.existing(this);
 
@@ -64,6 +61,9 @@ var food;
 var score = 0;
 var scoreText;
 
+
+var playerDir;
+
 var map;
 
 var backgroundlayer;
@@ -80,13 +80,17 @@ var timer;
 var spikes;
 var lavastop;
 var lavasbot;
+var fireballs;
+
+var ends;
 
 var filter;
 var sprite;
 
 var music;
 
-
+var crates;
+var playerspeed;
 
 
 theGame.prototype = {
@@ -120,13 +124,13 @@ theGame.prototype = {
         groundlayer.resizeWorld();
         groundlayer.enableBody = true;
 
-        this.CreateObjects();
-
         this.player = new Player(this.game, 80, 368-64);
 
         this.game.camera.follow(this.player);
 
         this.enemy = new Enemy(this.game, 400, 300);
+
+        this.CreateObjects();
 
         ////foregroundlayer
         foregroundlayer = map.createLayer('foreground');
@@ -154,8 +158,8 @@ theGame.prototype = {
         
         timer = this.game.time.create(false);
 
-        //  saker händer efter 2.5 sekunder
-        timer.loop(2500, ChangePlatformDir, this);
+        //  saker händer efter 2 sekunder
+        timer.loop(2000, ChangePlatformDir, this);
 
         timer.start();
 
@@ -178,8 +182,17 @@ theGame.prototype = {
         platforms = this.game.add.group();
         platforms.enableBody = true;
 
+        crates = this.game.add.group();
+        crates.enableBody = true;
+
+        ends = this.game.add.group();
+        ends.enableBody = true;
+
         spikes = this.game.add.group();
         spikes.enableBody = true;
+
+        fireballs = this.game.add.group();
+        fireballs.enableBody = true;
 
         lavastop = this.game.add.group();
         lavastop.enableBody = true;
@@ -187,6 +200,10 @@ theGame.prototype = {
         lavasbot = this.game.add.group();
         lavasbot.enableBody = true;
 
+
+
+        //end
+        map.createFromObjects('position', 216, 'items2', 0, true, false, ends);
         //burger
         map.createFromObjects('objects', 201, 'items1', 0, true, false, pickups);
         //grenade
@@ -195,8 +212,17 @@ theGame.prototype = {
         map.createFromObjects('objects', 206, 'items1', 5, true, false, pickups);
         //platform
         map.createFromObjects('platforms', 73, 'moveplatform', 0, true, false, platforms);
+        //crate
+        map.createFromObjects('platforms', 475, 'tilesobj', 49, true, false, crates);
         //spikes
         map.createFromObjects('danger', 217, 'items2', 1, true, false, spikes);
+        spikes.forEach(function (spike) {
+
+            spike.body.immovable = true;
+        },
+this);
+        //fireballs
+        map.createFromObjects('danger', 476, 'danger', 0, true, false, fireballs);
         //lavatypes
         map.createFromObjects('danger', 210, 'lava', 3, true, false, lavastop);
         map.createFromObjects('danger', 213, 'lava', 6, true, false, lavasbot);
@@ -204,12 +230,14 @@ theGame.prototype = {
         lavastop.forEach(function (lava) {
             lava.animations.add('moving', [3, 4, 5], 2, true);
             lava.body.tilePadding.set(32);
+            lava.body.immovable = true;
         },
 this);
 
         lavasbot.forEach(function (lava) {
             lava.animations.add('moving', [6, 7, 8], 2, true);
             lava.body.tilePadding.set(32);
+            lava.body.immovable = true;
         },
 this);
 
@@ -226,16 +254,16 @@ this);
         {
             
             this.player.scale.x = -1
-            this.player.body.velocity.x = -150;
-            this.player.animations.play('right');
+            this.player.body.velocity.x = -this.player.maxVelocityX;
+            this.player.animations.play('walk');
 
         }
         else if (cursors.right.isDown)
         {
             this.player.scale.x = 1
 
-            this.player.body.velocity.x = 150;
-            this.player.animations.play('right');
+            this.player.body.velocity.x = this.player.maxVelocityX;
+            this.player.animations.play('walk');
 
         }
         else
@@ -245,32 +273,51 @@ this);
         }
 
         if (cursors.up.isDown && this.player.body.onFloor() || cursors.up.isDown && this.player.body.touching.down) {
-            this.player.body.velocity.y = -250;
+            this.player.body.velocity.y = -this.player.maxVelocityY;
         }
     },
+
 
 
     update: function ()
     {
         filter.update();
 
-        lavastop.forEach(function (lava)
-        {
-            lava.animations.play('moving');
-        },
-        this);
-        lavasbot.forEach(function (lava) {
-            lava.animations.play('moving');
-        },
-        this);
+        
+
+
 
         //Collision
+
         this.game.physics.arcade.collide(this.player, groundlayer);
+        this.game.physics.arcade.collide(this.player, lavasbot, takeDmgY, null, this);
         this.game.physics.arcade.collide(this.enemy, groundlayer);
+        
+
 
         this.game.physics.arcade.collide(this.player, platforms);
-
+        this.game.physics.arcade.collide(this.player, crates);
+        this.game.physics.arcade.collide(crates, groundlayer);
+        this.game.physics.arcade.collide(fireballs, lavasbot);
         this.game.physics.arcade.overlap(this.player, pickups, collectfood, null, this);
+        this.game.physics.arcade.overlap(this.player, ends, endLevel, null, this);
+        this.game.physics.arcade.collide(this.player, spikes, takeDmgY, null, this);
+        this.game.physics.arcade.collide(this.player, fireballs, takeDmgX, null, this);
+        
+        function endLevel(player,endpos) {
+            this.game.state.start("GameOver");
+            music.pause();
+        }
+
+        function takeDmgY(player, danger) {
+            
+            this.player.body.velocity.y = -150;
+        }
+
+        function takeDmgX(player, danger) {
+
+            player.body.velocity.x = 150* playerDir;
+        }
 
         function collectfood(player, food) {
             //ta bort
@@ -280,8 +327,53 @@ this);
             scoreText.text = 'Score:' + score;
         }
 
-        //seconds = Math.floor(this.game.time.time / 1000) % 60;
-        //this.game.time.events.add(time, changePlatformDir, this);;
+
+        lavasbot.forEach(function (lava) {
+            lava.animations.play('moving');
+        },
+        this);
+        lavastop.forEach(function (lava) {
+            lava.animations.play('moving');
+
+        },
+        this);
+
+
+        fireballs.forEach(function (fireball) {
+            fireball.anchor.setTo(0.5, 0.5);
+            fireball.body.gravity.y = 600;
+            fireball.body.velocity.x = 0;
+           
+            if (fireball.body.velocity.y > 0)
+            {
+                fireball.scale.y = -1
+            }
+            else
+                fireball.scale.y = 1
+
+
+            if (fireball.body.touching.down)
+            {
+                fireball.body.velocity.y = -(this.game.rnd.integerInRange(500, 600));
+            }
+
+
+        },
+        this);
+
+
+        crates.forEach(function (crate) {
+            crate.body.gravity.y = 400;
+
+            if (crate.body.touching.left == false || crate.body.touching.right == false)
+            {                
+                crate.body.velocity.x = 0;
+            }
+            
+    
+        },
+        this);
+
 
         platforms.forEach(function (platform)
         {
@@ -297,8 +389,14 @@ this);
 
         //Kontroll
         this.KeyControllers();
+        playerDir = this.player.scale.x;
+        
 
 
+    },
+
+    render: function () {
+        this.game.debug.body(this.player, 'rgba(0, 255, 0, 0.9)');
     },
 
     BackgroundFilter: function()
