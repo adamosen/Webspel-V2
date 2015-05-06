@@ -44,5 +44,28 @@ namespace Webbspel.Controllers
             FormsAuthentication.SignOut();
             return RedirectToAction("Index", "Home");
         }
+
+        public ActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Register(System_Users U)
+        {
+            if (ModelState.IsValid)
+            {
+                using (LoginDBEntities dc = new LoginDBEntities())
+                {
+                    dc.System_Users.Add(U);
+                    dc.SaveChanges();
+                    ModelState.Clear();
+                    U = null;
+                    ViewBag.Message = "Successfully Registration Done";
+                }
+            }
+            return View(U);
+        }
 	}
 }

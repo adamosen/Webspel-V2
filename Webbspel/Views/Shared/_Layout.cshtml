@@ -9,13 +9,14 @@
     <script type="text/javascript" src="~/Scripts/phaser.min.js"></script>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jqueryval")
 
 </head>
 <body>
     <header>
         <input class="Submit1" type="submit" value="Logga in/Skapa ny profil" />
-        <input class="Submit1" type="submit" value="Logga ut" />
-        <div style="width: auto; background-color: #728ea7">
+        <input class="Submit1" type="submit" value="Logga ut" />-
+        <div style="width: auto; background-color: #FFFFFF">
             @if (Request.IsAuthenticated)
             {
                 <strong>@Html.Encode(User.Identity.Name)</strong>

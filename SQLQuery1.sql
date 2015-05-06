@@ -15,9 +15,3 @@ INSERT INTO [dbo].[System_Users]
 VALUES
 	('test', 'a94a8fe5ccb19ba61c4c0873d391e987982fbbd3', 'test@test.test')
 GO
-
-INSERT INTO [dbo].[System_Users]
-	([Username], [Password], [Email])
-VALUES
-	('Ludwig', 'pommes', 'ludwig.fingal@hotmail.com')
-GO
