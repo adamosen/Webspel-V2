@@ -81,11 +81,15 @@ var spikes;
 var lavastop;
 var lavasbot;
 var fireballs;
+var bats;
+var batAni;
+var enemies;
 
 var ends;
 
 var filter;
 var sprite;
+var turn = -1;
 
 var music;
 
@@ -114,6 +118,7 @@ theGame.prototype = {
         map.addTilesetImage('tiles1');
         map.addTilesetImage('moveplatform');
         map.addTilesetImage('lava');
+        map.addTilesetImage('bat');
         map.setCollisionBetween(1, 100);
 
         ////backgroundlayer
@@ -131,7 +136,7 @@ theGame.prototype = {
         this.enemy = new Enemy(this.game, 400, 300);
 
         this.CreateObjects();
-
+    
         ////foregroundlayer
         foregroundlayer = map.createLayer('foreground');
 
@@ -173,6 +178,9 @@ theGame.prototype = {
 
     CreateObjects: function()
     {
+        bats = this.game.add.group();
+        bats.enableBody = true;
+
         pickups = this.game.add.group();
         pickups.enableBody = true;
 
@@ -200,8 +208,8 @@ theGame.prototype = {
         lavasbot = this.game.add.group();
         lavasbot.enableBody = true;
 
-
-
+        //bats
+        map.createFromObjects('enemies', 481, 'bat', 0, true, false, bats);
         //end
         map.createFromObjects('position', 216, 'items2', 0, true, false, ends);
         //burger
@@ -226,6 +234,15 @@ this);
         //lavatypes
         map.createFromObjects('danger', 210, 'lava', 3, true, false, lavastop);
         map.createFromObjects('danger', 213, 'lava', 6, true, false, lavasbot);
+
+        bats.forEach(function (bat) {
+
+        batAni = bat.animations.add('wake', [0, 1, 2, 3, 4, 5], 6, false);
+        batAni = bat.animations.add('fly', [6, 7, 8, 9], 12, true);
+        bat.body.immovable = true;
+        bat.body.tilePadding.set(32);
+        },
+        this);
 
         lavastop.forEach(function (lava) {
             lava.animations.add('moving', [3, 4, 5], 2, true);
@@ -277,6 +294,53 @@ this);
         }
     },
 
+    BatFlying: function()
+    {
+        bats.forEach(function (bat) {
+
+
+            
+            if (Phaser.Math.distance(this.player.x, this.player.y, bat.x, bat.y) <= 200)
+            {
+                bat.animations.play('fly')
+                bat.body.velocity.x = 100*turn;
+                bat.body.velocity.y = 100 * turn;
+
+            }
+
+            if (bat.body.touching.up ||bat.body.touching.down ||bat.body.touching.left ||bat.body.touching.right )
+            {
+                turn = turn * -1;
+            }
+
+            //batAni.onComplete.add(FlyAni, this);
+
+            //bat.events.onAnimationComplete.add(FlyAni, this);
+
+            //function FlyAni()
+            //{
+            //    bat.animations.play('fly');
+            //}
+
+            //bat.events.onAnimationComplete.add(function () {
+            //    score++;
+            //    batAni = bat.animations.add('wake', [6,7,8,9], 12, true);
+            //}, this);
+
+            
+            //if(batAni.isFinished == true)
+            //{
+            //    batAni = bat.animations.add('wake', [0, 1, 2, 3, 4, 5], 12, true);
+            //}
+            
+            //bat.events.onAnimationComplete.add(function ()
+            //{
+            //    bat.animations.play('wake').play(6);;
+            //}, this);
+        },
+this);
+    },
+
 
 
     update: function ()
@@ -285,14 +349,15 @@ this);
 
         
 
-
+        
 
         //Collision
 
         this.game.physics.arcade.collide(this.player, groundlayer);
         this.game.physics.arcade.collide(this.player, lavasbot, takeDmgY, null, this);
         this.game.physics.arcade.collide(this.enemy, groundlayer);
-        
+        this.game.physics.arcade.collide(bats,groundlayer);
+        this.game.physics.arcade.overlap(bats, this.player);
 
 
         this.game.physics.arcade.collide(this.player, platforms);
@@ -303,7 +368,9 @@ this);
         this.game.physics.arcade.overlap(this.player, ends, endLevel, null, this);
         this.game.physics.arcade.collide(this.player, spikes, takeDmgY, null, this);
         this.game.physics.arcade.collide(this.player, fireballs, takeDmgX, null, this);
-        
+
+        this.BatFlying();
+
         function endLevel(player,endpos) {
             this.game.state.start("GameOver");
             music.pause();
@@ -326,7 +393,6 @@ this);
             score += 10;
             scoreText.text = 'Score:' + score;
         }
-
 
         lavasbot.forEach(function (lava) {
             lava.animations.play('moving');
