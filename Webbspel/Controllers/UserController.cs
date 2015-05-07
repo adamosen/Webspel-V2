@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using Webbspel.Models;
 
 namespace Webbspel.Controllers
 {
@@ -45,6 +46,8 @@ namespace Webbspel.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        //
+        // GET: /User/
         public ActionResult Register()
         {
             return View();
@@ -52,17 +55,17 @@ namespace Webbspel.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Register(System_Users U)
+        public ActionResult Register(User U)
         {
             if (ModelState.IsValid)
             {
-                using (LoginDBEntities dc = new LoginDBEntities())
+                using (LoginEntities dc = new LoginEntities())
                 {
-                    dc.System_Users.Add(U);
+                    //dc.System_Users.Add(U);
                     dc.SaveChanges();
                     ModelState.Clear();
                     U = null;
-                    ViewBag.Message = "Successfully Registration Done";
+                    ViewBag.Message = "Registration Done";
                 }
             }
             return View(U);

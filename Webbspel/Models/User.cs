@@ -12,7 +12,7 @@ namespace Webbspel.Models
 {
     public class User
     {
-        [Required(ErrorMessage="Please provice username", AllowEmptyStrings=false)]
+        [Required(ErrorMessage="Please provide username", AllowEmptyStrings=false)]
         [Display(Name = "Username")]
         public string UserName { get; set; }
 

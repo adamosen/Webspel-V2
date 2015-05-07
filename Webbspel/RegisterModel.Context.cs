@@ -13,10 +13,10 @@ namespace Webbspel
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class LoginDBEntities : DbContext
+    public partial class LoginEntities : DbContext
     {
-        public LoginDBEntities()
-            : base("name=LoginDBEntities")
+        public LoginEntities()
+            : base("name=LoginEntities")
         {
         }
     
@@ -26,10 +26,5 @@ namespace Webbspel
         }
     
         public virtual DbSet<System_Users> System_Users { get; set; }
-
-        internal void Add(Models.User U)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

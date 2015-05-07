@@ -15,7 +15,7 @@
 <body>
     <header>
         <input class="Submit1" type="submit" value="Logga in/Skapa ny profil" />
-        <input class="Submit1" type="submit" value="Logga ut" />-
+        <input class="Submit1" type="submit" value="Logga ut" />
         <div style="width: auto; background-color: #FFFFFF">
             @if (Request.IsAuthenticated)
             {
@@ -53,6 +53,9 @@
         </div>
     </div>
 
-        
+    @Scripts.Render("~/bundles/jquery")
+    @RenderSection("scripts", required: false)
+
+    
 </body>
 </html>
