@@ -14,20 +14,8 @@
 </head>
 <body>
     <header>
-        <input class="Submit1" type="submit" value="Logga in/Skapa ny profil" />
-        <input class="Submit1" type="submit" value="Logga ut" />
         <div style="width: auto; background-color: #FFFFFF">
-            @if (Request.IsAuthenticated)
-            {
-                <strong>@Html.Encode(User.Identity.Name)</strong>
-                @Html.ActionLink("Log out", "Logout", "User")
-            }
-            else
-            {
-                @Html.ActionLink("Register", "Register", "User")
-                <span> | </span>
-                @Html.ActionLink("Log in", "Login", "User")
-            }
+            @Html.Partial("_LoginPartial")
         </div>
     </header>
     <div id="wrapper">

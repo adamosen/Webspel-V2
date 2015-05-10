@@ -55,13 +55,13 @@ namespace Webbspel.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Register(User U)
+        public ActionResult Register(System_Users U)
         {
             if (ModelState.IsValid)
             {
                 using (LoginEntities dc = new LoginEntities())
                 {
-                    //dc.System_Users.Add(U);
+                    dc.System_Users.Add(U);
                     dc.SaveChanges();
                     ModelState.Clear();
                     U = null;

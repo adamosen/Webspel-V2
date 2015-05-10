@@ -106,3 +106,9 @@ h1{
 #content{
     color: black;
 }
+nav{
+    margin-bottom: 75px;
+}
+#phaser-game{
+    margin-left: 75px;
+}
