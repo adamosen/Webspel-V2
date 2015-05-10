@@ -10,7 +10,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using Webbspel.Models;
 
-namespace registertest.Controllers
+namespace Webbspel.Controllers
 {
     [Authorize]
     public class AccountController : Controller
