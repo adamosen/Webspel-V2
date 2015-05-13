@@ -10,14 +10,12 @@ var Player = function (game, x, y)
 
     this.game.physics.enable(this, Phaser.Physics.ARCADE);
     
-    this.maxVelocityX = 200;
+    this.maxVelocityX = 600;
     this.maxVelocityY = 250;
-    this.minHealth = 1;
-    this.health = 10;
-    //this.hittingEnemy = false;
+    this.health = 3;
     this.body.setSize(25, 64, 0, 0);
 
-    this.body.collideWorldBounds = true;
+    //this.body.collideWorldBounds = true;
     this.body.gravity.y = 400;
 
     // Set ankarpunkt i centrum
@@ -35,32 +33,50 @@ var Player = function (game, x, y)
 Player.prototype = Object.create(Phaser.Sprite.prototype);
 Player.prototype.constructor = Player;
 
-var Enemy = function (game, x, y) {
+//var HP = function (game, x, y) {
 
-    Phaser.Sprite.call(this, game, x, y, 'bear');
+//    ////lives
+//    //Phaser.Sprite.call(this, game, x + (35 * i), y, 'hp');
+//    //var hp;
+//    //hp = this.game.add.group();
 
-    this.game.physics.enable(this, Phaser.Physics.ARCADE);
-    this.body.collideWorldBounds = true;
-    this.body.gravity.y = 400;
+//    //this.game.add.text(this.game.world.width - 100, 10, 'Lives : ', { font: '34px Arial', fill: '#fff' });
 
-    this.animations.add('left', [1, 2, 3, 4, 5], 12, true);
-    this.animations.add('right', [1, 2, 3, 4, 5], 12, true);
-    this.body.tilePadding.set(32);
-    this.game.add.existing(this);
+//    //var dude = lives.create(game.world.width - 100 + (30 * i), 60, 'dude');
+//    //var lives;
+//    //lives = game.add.group();
 
-};
-Enemy.prototype = Object.create(Phaser.Sprite.prototype);
-Enemy.prototype.constructor = Enemy;
+//    //for (var i = 0; i < 3; i++)
+//    //{
+    
+//    //    lives.create(x + (35 * i), y + 60, 'hp');
+
+//        Phaser.Sprite.call(this, game, x, y, 'hp');
+      
+//    //}
+
+
+//    //this.body.tilePadding.set(32);
+//    this.game.add.existing(this);
+
+//};
+//HP.prototype = Object.create(Phaser.Sprite.prototype);
+//HP.prototype.constructor = HP;
 
 
 var player = this.player;
-var enemy = this.enemy;
+//var HP = this.HP;
 var cursors;
+var tossgranadeButton;
 var pickups;
 var food;
 var score = 0;
 var scoreText;
 
+var pauseKey;
+var worldTimer;
+var timecounter = 0;
+var deathcounter = 2;
 
 var playerDir;
 
@@ -76,6 +92,7 @@ var platforms;
 var platformDir = -1;
 var seconds;
 var timer;
+var dmgCount;
 
 var spikes;
 var lavastop;
@@ -84,17 +101,28 @@ var fireballs;
 var bats;
 var batAni;
 var enemies;
+//var lifesleft = 3;
+
+var lives;
 
 var ends;
 
+var hp;
+
 var filter;
 var sprite;
-var turn = -1;
+var turnV = -1;
+var turnH = -1;
+
+var hpText;
 
 var music;
 
 var crates;
 var playerspeed;
+
+var grandeTimer = 0;
+var weaponGranades;
 
 
 theGame.prototype = {
@@ -119,22 +147,24 @@ theGame.prototype = {
         map.addTilesetImage('moveplatform');
         map.addTilesetImage('lava');
         map.addTilesetImage('bat');
-        map.setCollisionBetween(1, 100);
+        //map.setCollisionBetween(1, 100);
 
         ////backgroundlayer
         backgroundlayer = map.createLayer('background');
 
         ////groundlayer
         groundlayer = map.createLayer('ground');
+        map.setCollisionBetween(1, 1000, true, 'ground');
         groundlayer.resizeWorld();
         groundlayer.enableBody = true;
+
+        lives = this.game.add.group();
 
         this.player = new Player(this.game, 80, 368-64);
 
         this.game.camera.follow(this.player);
 
-        this.enemy = new Enemy(this.game, 400, 300);
-
+        
         this.CreateObjects();
     
         ////foregroundlayer
@@ -146,12 +176,56 @@ theGame.prototype = {
         scoreText = this.game.add.text(16, 16, 'Score: 0', { font: "30px Arial" });
         scoreText.fixedToCamera = true;
 
+        hpText = this.game.add.text(16, 40, 'hp: 0', { font: "30px Arial" });
+        hpText.fixedToCamera = true;
+
         //Music
         music = this.game.add.audio("music1");
         music.play('', 0, 1, true);
         music.onLoop.add(this.playLevelMusic, this);
 
+        this.UpdateHp();
 
+        //granades
+        //  Our granade group
+        weaponGranades = this.game.add.group();
+        weaponGranades.enableBody = true;
+        weaponGranades.physicsBodyType = Phaser.Physics.ARCADE;
+        weaponGranades.createMultiple(30, 'items1',2);
+        //weaponGranades.setAll('anchor.x', -0.5);
+        weaponGranades.setAll('anchor.y', 1);
+        weaponGranades.setAll('outOfBoundsKill', true);
+        weaponGranades.setAll('checkWorldBounds', true);
+
+
+        ////pausar spelet och timern
+        pauseKey = this.game.add.sprite(100, 100, 'pauseKey');
+        pauseKey.inputEnabled = true;
+        pauseKey.events.onInputUp.add(function () {
+            this.game.paused = true;
+        }, this);
+        this.game.input.onDown.add(function () { if (this.game.paused) this.game.paused = false; }, this);
+
+        ////timer
+        worldTimer = this.game.add.text(150, 150, '0');
+        currentTimer = this.game.time.create(false);
+        currentTimer.loop(1000, this.updateTimer, this);
+        currentTimer.start();
+    },
+
+    updateTimer: function () {
+        deathcounter++;
+        timecounter++;
+        worldTimer.setText(timecounter);
+    },
+
+    UpdateHp: function()
+    {
+        //  Lives   
+        for (var i = 0; i < this.player.health; i++) {
+            hp = lives.create(80 - 35 * i, 64, 'hp');
+            hp.fixedToCamera = true;
+        }
     },
 
     playLevelMusic: function() {
@@ -178,6 +252,7 @@ theGame.prototype = {
 
     CreateObjects: function()
     {
+
         bats = this.game.add.group();
         bats.enableBody = true;
 
@@ -235,11 +310,10 @@ this);
         map.createFromObjects('danger', 210, 'lava', 3, true, false, lavastop);
         map.createFromObjects('danger', 213, 'lava', 6, true, false, lavasbot);
 
-        bats.forEach(function (bat) {
-
+        bats.forEach(function (bat)
+        {            
         batAni = bat.animations.add('wake', [0, 1, 2, 3, 4, 5], 6, false);
         batAni = bat.animations.add('fly', [6, 7, 8, 9], 12, true);
-        bat.body.immovable = true;
         bat.body.tilePadding.set(32);
         },
         this);
@@ -262,12 +336,44 @@ this);
         //map.createFromObjects('position', 220, 'bear', 0,true,false,this.player);
     },
 
+    tossGranade: function ()
+    {
+
+        //To avoid them being allowed to fire too fast we set a time limit
+        if (this.game.time.now > grandeTimer)
+        {
+            //  Grab the first bullet we can from the pool
+            weaponGranade = weaponGranades.getFirstExists(false);
+            
+            if (weaponGranade)
+            {
+             //  And fire it
+            weaponGranade.reset(this.player.x, this.player.y + 1);
+            weaponGranade.body.velocity.x = 500;
+
+            grandeTimer = this.game.time.now + 200;
+            }
+        }
+          
+},
+
     KeyControllers: function ()
     {
         cursors = this.game.input.keyboard.createCursorKeys();
-        this.player.body.velocity.x = 0;
+        tossgranadeButton = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        if(deathcounter > 1)
+            this.player.body.velocity.x = 0;
 
-        if (cursors.left.isDown)
+
+
+        if (tossgranadeButton.isDown) {
+          
+            this.tossGranade();
+        }
+           
+
+
+        if (cursors.left.isDown && deathcounter > 1)
         {
             
             this.player.scale.x = -1
@@ -275,7 +381,7 @@ this);
             this.player.animations.play('walk');
 
         }
-        else if (cursors.right.isDown)
+        else if (cursors.right.isDown && deathcounter > 1)
         {
             this.player.scale.x = 1
 
@@ -289,7 +395,7 @@ this);
             this.player.frame = 0;
         }
 
-        if (cursors.up.isDown && this.player.body.onFloor() || cursors.up.isDown && this.player.body.touching.down) {
+        if (cursors.up.isDown && this.player.body.onFloor() && deathcounter > 1 || cursors.up.isDown && this.player.body.touching.down && deathcounter > 1) {
             this.player.body.velocity.y = -this.player.maxVelocityY;
         }
     },
@@ -299,19 +405,25 @@ this);
         bats.forEach(function (bat) {
 
 
-            
-            if (Phaser.Math.distance(this.player.x, this.player.y, bat.x, bat.y) <= 200)
+            bat.body.bounce.set(1);
+            if (Phaser.Math.distance(this.player.x, this.player.y, bat.x, bat.y) <= 200 && bat.body.velocity.y == 0 && bat.body.velocity.x == 0)
             {
                 bat.animations.play('fly')
-                bat.body.velocity.x = 100*turn;
-                bat.body.velocity.y = 100 * turn;
+                bat.body.velocity.y = this.game.rnd.integerInRange(-100, 100);
+                bat.body.velocity.x = this.game.rnd.integerInRange(-100, 100);
+                
 
             }
+            
 
-            if (bat.body.touching.up ||bat.body.touching.down ||bat.body.touching.left ||bat.body.touching.right )
-            {
-                turn = turn * -1;
-            }
+            //if (bat.body.onFloor())
+            //{             
+            //    bat.body.velocity.y *= -1;
+            //}
+            //if (bat.body.touching.left || bat.body.touching.wall)
+            //{
+            //    enemy.body.velocity.x *= -1;
+            //}
 
             //batAni.onComplete.add(FlyAni, this);
 
@@ -346,18 +458,15 @@ this);
     update: function ()
     {
         filter.update();
-
         
-
-        
-
+        hpText.text = this.player.health;
         //Collision
 
         this.game.physics.arcade.collide(this.player, groundlayer);
-        this.game.physics.arcade.collide(this.player, lavasbot, takeDmgY, null, this);
+        this.game.physics.arcade.collide(this.player, lavasbot, takeDmgFatal, null, this);
         this.game.physics.arcade.collide(this.enemy, groundlayer);
-        this.game.physics.arcade.collide(bats,groundlayer);
-        this.game.physics.arcade.overlap(bats, this.player);
+        this.game.physics.arcade.overlap(bats,groundlayer);
+        //this.game.physics.arcade.overlap(bats, this.player);
 
 
         this.game.physics.arcade.collide(this.player, platforms);
@@ -366,33 +475,91 @@ this);
         this.game.physics.arcade.collide(fireballs, lavasbot);
         this.game.physics.arcade.overlap(this.player, pickups, collectfood, null, this);
         this.game.physics.arcade.overlap(this.player, ends, endLevel, null, this);
-        this.game.physics.arcade.collide(this.player, spikes, takeDmgY, null, this);
+        this.game.physics.arcade.overlap(this.player, bats, takeDmgX, null, this);
+        this.game.physics.arcade.collide(this.player, spikes, takeDmgFatal, null, this);
         this.game.physics.arcade.collide(this.player, fireballs, takeDmgX, null, this);
 
         this.BatFlying();
 
-        function endLevel(player,endpos) {
+        
+        function endLevel(player, endpos)
+        {
             this.game.state.start("GameOver");
             music.pause();
         }
 
-        function takeDmgY(player, danger) {
+
+
+
+
+
+        function takeDmgFatal(player, danger)
+        {
+
             
+            var live = lives.getFirstAlive();
+
+            if (live) {
+                live.kill();
+                //fataldmg
+                this.player.health = 0;
+                 
+            }
             this.player.body.velocity.y = -150;
+
+      
+            
         }
 
-        function takeDmgX(player, danger) {
+        if (this.player.health <= 0)
+        {
 
-            player.body.velocity.x = 150* playerDir;
+            this.game.state.start("GameOver");
+            music.pause();
+
+            //this.player.kill();
+            //this.player = new Player(this.game, 80, 368 - 64);
+            //this.game.camera.follow(this.player);
+            //this.player.health = 3;
+            //this.UpdateHp();
         }
+
+        function takeDmgX(player, danger)
+        {            
+            
+            var live = lives.getFirstAlive();
+
+
+            if (deathcounter > 1)
+            {
+                if (live)
+                {
+                    live.kill();
+                    player.body.velocity.x = -danger.body.velocity.x
+                    player.body.velocity.y = -danger.body.velocity.y
+                    //loselife
+                    this.player.health--;
+
+                }
+                deathcounter = 0;
+                
+            }
+            
+
+        }
+
 
         function collectfood(player, food) {
             //ta bort
             food.kill();
+
             //lägger till score
             score += 10;
             scoreText.text = 'Score:' + score;
         }
+
+        //this.UpdateHp();
+
 
         lavasbot.forEach(function (lava) {
             lava.animations.play('moving');
@@ -439,7 +606,6 @@ this);
     
         },
         this);
-
 
         platforms.forEach(function (platform)
         {

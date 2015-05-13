@@ -13,7 +13,7 @@ preload.prototype = {
 		this.game.load.image("lower", "/Content/assets/lower.png");
 		this.game.load.image("gameover", "/Content/assets/gameover.png");
         //map
-		this.game.load.tilemap('map', '/Content/gameassets/levels/leveljun0.json', null, Phaser.Tilemap.TILED_JSON);
+		this.game.load.tilemap('map', '/Content/gameassets/levels/leveljun2.json', null, Phaser.Tilemap.TILED_JSON);
 
 		this.game.load.image('burger', '/Content/gameassets/burger.png');
 		this.game.load.image('tiles2', '/Content/gameassets/tiles2.png');
@@ -29,8 +29,12 @@ preload.prototype = {
         this.game.load.spritesheet('danger', '/Content/gameassets/dangers.png', 16, 16);
 
         //karaktärer
-		this.game.load.spritesheet('bear', '/Content/gameassets/charsprites.png', 32, 64);
-		this.game.load.spritesheet('bat', '/Content/gameassets/bat.png', 32, 32);
+        this.game.load.spritesheet('bear', '/Content/gameassets/charsprites.png', 32, 64);
+        this.game.load.spritesheet('bat', '/Content/gameassets/bat.png', 32, 32);
+        this.game.load.spritesheet('hp', '/Content/gameassets/hp.png', 32, 32);
+
+	    //pauseKey
+        this.game.load.image('pauseKey', '/Content//gameassets//burger.png');
 
 	    //audio
 		this.game.load.audio("music1", "/Content/gameassets/music/Jazz Jackrabbit 2 - Medival Jam.m4a");
