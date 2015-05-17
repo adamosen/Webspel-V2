@@ -10,7 +10,7 @@ var Player = function (game, x, y)
 
     this.game.physics.enable(this, Phaser.Physics.ARCADE);
     
-    this.maxVelocityX = 600;
+    this.maxVelocityX = 200;
     this.maxVelocityY = 250;
     this.health = 3;
     this.body.setSize(25, 64, 0, 0);
@@ -72,15 +72,18 @@ var pickups;
 var food;
 var score = 0;
 var scoreText;
+var justPressed = false;
 
 var pauseKey;
 var worldTimer;
 var timecounter = 0;
 var deathcounter = 2;
+var granadeCount = 1;
 
 var playerDir;
 
 var map;
+
 
 var backgroundlayer;
 var groundlayer;
@@ -104,6 +107,8 @@ var enemies;
 //var lifesleft = 3;
 
 var lives;
+var booms;
+//var boom;
 
 var ends;
 
@@ -186,17 +191,6 @@ theGame.prototype = {
 
         this.UpdateHp();
 
-        //granades
-        //  Our granade group
-        weaponGranades = this.game.add.group();
-        weaponGranades.enableBody = true;
-        weaponGranades.physicsBodyType = Phaser.Physics.ARCADE;
-        weaponGranades.createMultiple(30, 'items1',2);
-        //weaponGranades.setAll('anchor.x', -0.5);
-        weaponGranades.setAll('anchor.y', 1);
-        weaponGranades.setAll('outOfBoundsKill', true);
-        weaponGranades.setAll('checkWorldBounds', true);
-
 
         ////pausar spelet och timern
         pauseKey = this.game.add.sprite(100, 100, 'pauseKey');
@@ -252,9 +246,25 @@ theGame.prototype = {
 
     CreateObjects: function()
     {
+        //granades
+        //  Our granade group
+        weaponGranades = this.game.add.group();
+        weaponGranades.enableBody = true;
+        weaponGranades.physicsBodyType = Phaser.Physics.ARCADE;
+        //weaponGranades.createMultiple(5, 'items1', 2);
+        //weaponGranades.setAll('anchor.x', -0.5);
+        //weaponGranades.setAll('anchor.y', 1);
+        weaponGranades.setAll('outOfBoundsKill', true);
+        weaponGranades.setAll('checkWorldBounds', true);
+
 
         bats = this.game.add.group();
         bats.enableBody = true;
+
+        booms = this.game.add.group();
+        booms.enableBody = true;
+
+        
 
         pickups = this.game.add.group();
         pickups.enableBody = true;
@@ -309,7 +319,7 @@ this);
         //lavatypes
         map.createFromObjects('danger', 210, 'lava', 3, true, false, lavastop);
         map.createFromObjects('danger', 213, 'lava', 6, true, false, lavasbot);
-
+        //bats
         bats.forEach(function (bat)
         {            
         batAni = bat.animations.add('wake', [0, 1, 2, 3, 4, 5], 6, false);
@@ -317,6 +327,13 @@ this);
         bat.body.tilePadding.set(32);
         },
         this);
+
+//        weaponGranades.forEach(function (granade)
+//        {
+//            granade.body.gravity.y = 400;
+//            granade.body.bounce.set(0.5);
+//        },
+//this);
 
         lavastop.forEach(function (lava) {
             lava.animations.add('moving', [3, 4, 5], 2, true);
@@ -340,18 +357,77 @@ this);
     {
 
         //To avoid them being allowed to fire too fast we set a time limit
-        if (this.game.time.now > grandeTimer)
+        if (this.game.time.now > grandeTimer && granadeCount > 0)
         {
             //  Grab the first bullet we can from the pool
-            weaponGranade = weaponGranades.getFirstExists(false);
+            //weaponGranade = weaponGranades.getFirstExists(false);
+            weaponGranade = weaponGranades.create(0, 0, 'items1', 2);
+
+
+            weaponGranades.forEach(function (weaponGranade)
+            {
+                weaponGranade.anchor.setTo(0.5, 0.5);
+
+                this.game.time.events.add(Phaser.Timer.SECOND * 3, function ()
+                {
+                    
+                    justPressed = false;
+                    bats.forEach(function (bat) {
+
+                        if (Phaser.Math.distance(weaponGranade.x, weaponGranade.y, bat.x, bat.y) <= 150)
+                        {
+                            bat.kill();
+
+                        }
+
+                    },
+this);
+
+                    var boom = booms.create(weaponGranade.body.x, weaponGranade.body.y, "boom");
+                    boom.anchor.setTo(0.5, 0.5);
+                    boom.scale.set(4, 4);
+
+                    booms.forEach(function (boom)
+                        {
+                             boom.animations.add('boom', [0, 1, 2, 3, 4, 3 ,2, 1,0], true);
+
+
+                        },
+                        this);
+                        
+                                 
+                    boom.animations.play('boom', 6, false, true);
+
+                    weaponGranade.kill();
+
+                }, this);
+            },
+            this);
+
+
             
             if (weaponGranade)
-            {
+            {                
+                weaponGranade.allowRotation = true;
+                weaponGranade.body.gravity.y = 400;
+                weaponGranade.body.bounce.set(0.5);
+                //weaponGranade.body.angularVelocity = 200;
+                //weaponGranade.friction = new Phaser.Point(1, 0.5);
+                //var rotate = weaponGranade.rotation;
              //  And fire it
-            weaponGranade.reset(this.player.x, this.player.y + 1);
-            weaponGranade.body.velocity.x = 500;
+                weaponGranade.reset(this.player.x, this.player.y + 1);
+                if (this.player.scale.x == 1)
+                {
+                    weaponGranade.body.velocity.x = 500;
+                    weaponGranade.body.angularVelocity = 500;
+                }
+                else if (this.player.scale.x == -1)
+                {
+                    weaponGranade.body.velocity.x = -500;
+                    weaponGranade.body.angularVelocity = -500;
+                }
 
-            grandeTimer = this.game.time.now + 200;
+            grandeTimer = this.game.time.now + 3000;
             }
         }
           
@@ -364,11 +440,10 @@ this);
         if(deathcounter > 1)
             this.player.body.velocity.x = 0;
 
-
-
-        if (tossgranadeButton.isDown) {
+        if (tossgranadeButton.isDown && justPressed == false) {
           
             this.tossGranade();
+            justPressed = true;
         }
            
 
@@ -414,44 +489,11 @@ this);
                 
 
             }
-            
 
-            //if (bat.body.onFloor())
-            //{             
-            //    bat.body.velocity.y *= -1;
-            //}
-            //if (bat.body.touching.left || bat.body.touching.wall)
-            //{
-            //    enemy.body.velocity.x *= -1;
-            //}
-
-            //batAni.onComplete.add(FlyAni, this);
-
-            //bat.events.onAnimationComplete.add(FlyAni, this);
-
-            //function FlyAni()
-            //{
-            //    bat.animations.play('fly');
-            //}
-
-            //bat.events.onAnimationComplete.add(function () {
-            //    score++;
-            //    batAni = bat.animations.add('wake', [6,7,8,9], 12, true);
-            //}, this);
-
-            
-            //if(batAni.isFinished == true)
-            //{
-            //    batAni = bat.animations.add('wake', [0, 1, 2, 3, 4, 5], 12, true);
-            //}
-            
-            //bat.events.onAnimationComplete.add(function ()
-            //{
-            //    bat.animations.play('wake').play(6);;
-            //}, this);
         },
 this);
     },
+
 
 
 
@@ -465,6 +507,7 @@ this);
         this.game.physics.arcade.collide(this.player, groundlayer);
         this.game.physics.arcade.collide(this.player, lavasbot, takeDmgFatal, null, this);
         this.game.physics.arcade.collide(this.enemy, groundlayer);
+        this.game.physics.arcade.collide(weaponGranades, groundlayer);
         this.game.physics.arcade.overlap(bats,groundlayer);
         //this.game.physics.arcade.overlap(bats, this.player);
 
@@ -474,6 +517,7 @@ this);
         this.game.physics.arcade.collide(crates, groundlayer);
         this.game.physics.arcade.collide(fireballs, lavasbot);
         this.game.physics.arcade.overlap(this.player, pickups, collectfood, null, this);
+        this.game.physics.arcade.overlap(this.player, granades, collectGranade, null, this);
         this.game.physics.arcade.overlap(this.player, ends, endLevel, null, this);
         this.game.physics.arcade.overlap(this.player, bats, takeDmgX, null, this);
         this.game.physics.arcade.collide(this.player, spikes, takeDmgFatal, null, this);
@@ -548,6 +592,15 @@ this);
 
         }
 
+        function collectGranade(player, pickup) {
+            //ta bort
+            pickup.kill();
+
+            //lägger till score
+            score += 10;
+            granadeCount = granadeCount + 1;
+            scoreText.text = 'Score:' + score;
+        }
 
         function collectfood(player, food) {
             //ta bort
@@ -558,8 +611,16 @@ this);
             scoreText.text = 'Score:' + score;
         }
 
-        //this.UpdateHp();
+        //this.UpdateHp();nd
 
+        //booms.forEach(function (boom) {
+        //    if (boom.animations.currentAnim.frame == 3)
+        //    {
+        //        boom.body = null;
+        //        boom.destroy();
+        //    }
+        //},
+        //this);
 
         lavasbot.forEach(function (lava) {
             lava.animations.play('moving');
@@ -570,6 +631,18 @@ this);
 
         },
         this);
+
+//        weaponGranades.forEach(function (weaponGranade) {
+
+//            if (weaponGranade.body.velocity > 0) {
+//                weaponGranade.body.angularVelocity = 500;
+//            }
+//            else if (weaponGranade.body.angularVelocity < 0) {
+//                weaponGranade.body.angularVelocity = -500;
+//            }
+
+//        },
+//this);
 
 
         fireballs.forEach(function (fireball) {
@@ -618,6 +691,13 @@ this);
 
         },
         this);
+
+        //        booms.forEach(function (boom)
+        //        {
+        //            boom.animations.add('boom', [0, 1, 2, 3, 2, 1, 0], true);
+
+        //        },
+        //this);
 
         //Kontroll
         this.KeyControllers();

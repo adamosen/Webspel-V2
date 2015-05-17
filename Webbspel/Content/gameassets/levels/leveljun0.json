@@ -1227,7 +1227,7 @@
                 {
                  "gid":481,
                  "height":0,
-                 "id":234,
+                 "id":236,
                  "name":"bat",
                  "properties":
                     {
@@ -1237,8 +1237,40 @@
                  "type":"enemy",
                  "visible":true,
                  "width":0,
-                 "x":432,
-                 "y":352
+                 "x":784,
+                 "y":288
+                }, 
+                {
+                 "gid":481,
+                 "height":0,
+                 "id":237,
+                 "name":"bat",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"enemy",
+                 "visible":true,
+                 "width":0,
+                 "x":576,
+                 "y":288
+                }, 
+                {
+                 "gid":481,
+                 "height":0,
+                 "id":241,
+                 "name":"bat",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"enemy",
+                 "visible":true,
+                 "width":0,
+                 "x":1472,
+                 "y":368
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1247,7 +1279,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":235,
+ "nextobjectid":242,
  "orientation":"orthogonal",
  "properties":
     {
