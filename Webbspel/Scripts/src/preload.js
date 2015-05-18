@@ -2,7 +2,9 @@ var preload = function(game){}
 
 preload.prototype = {
 	preload: function(){ 
-          var loadingBar = this.add.sprite(400,240,"loading");
+	    var loadingBar = this.add.sprite(400, 240, "loading");
+	   
+
           loadingBar.anchor.setTo(0.5,0.5);
           this.load.setPreloadSprite(loadingBar);
 
@@ -12,8 +14,10 @@ preload.prototype = {
 		this.game.load.image("higher", "/Content/assets/higher.png");
 		this.game.load.image("lower", "/Content/assets/lower.png");
 		this.game.load.image("gameover", "/Content/assets/gameover.png");
-        //map
+	    //map
 		this.game.load.tilemap('map', '/Content/gameassets/levels/leveljun0.json', null, Phaser.Tilemap.TILED_JSON);
+		this.game.load.tilemap('map2', '/Content/gameassets/levels/level2new.json', null, Phaser.Tilemap.TILED_JSON);
+		this.game.load.tilemap('map3', '/Content/gameassets/levels/leveltre.json', null, Phaser.Tilemap.TILED_JSON);
 
 		this.game.load.image('burger', '/Content/gameassets/burger.png');
 		this.game.load.image('tiles2', '/Content/gameassets/tiles2.png');
@@ -40,7 +44,13 @@ preload.prototype = {
 	    //audio
 		this.game.load.audio("music1", "/Content/gameassets/music/Jazz Jackrabbit 2 - Medival Jam.m4a");
 	},
-  	create: function(){
+	create: function ()
+	{
+      
 		this.game.state.start("GameTitle");
-	}
+  	},
+    update: function ()
+    {
+       
+    }
 }

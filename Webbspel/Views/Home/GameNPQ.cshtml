@@ -14,6 +14,7 @@
     <script src="~/Scripts/src/gametitle.js"></script>
     <script src="~/Scripts/src/thegame.js"></script>
     <script src="~/Scripts/src/gameover.js"></script>
+    <script src="~/Scripts/src/gamewon.js"></script>
     <style>
         body {
             margin: 0;
@@ -28,6 +29,7 @@
             game.state.add("GameTitle", gameTitle);
             game.state.add("TheGame", theGame);
             game.state.add("GameOver", gameOver);
+            game.state.add("Win", win);
             game.state.start("Boot");
         })();
     </script>

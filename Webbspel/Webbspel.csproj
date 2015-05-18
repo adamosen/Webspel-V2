@@ -227,10 +227,12 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\gameassets\blue.png" />
+    <Content Include="Content\gameassets\boom1.png" />
     <Content Include="Content\gameassets\burger.png" />
     <Content Include="Content\gameassets\charsprites.png" />
     <Content Include="Content\gameassets\grassblock.png" />
     <Content Include="Content\gameassets\items1.png" />
+    <Content Include="Content\gameassets\levels\tiles.png" />
     <Content Include="Content\gameassets\mudblock.png" />
     <Content Include="Content\gameassets\red.png" />
     <Content Include="Content\gameassets\tiles.png" />
@@ -280,6 +282,19 @@
       <DependentUpon>RegisterModel.edmx</DependentUpon>
       <LastGenOutput>RegisterModel.cs</LastGenOutput>
     </Content>
+    <Content Include="Content\gameassets\levels\level0.json" />
+    <Content Include="Content\gameassets\levels\level3.json" />
+    <Content Include="Content\gameassets\levels\level4.json" />
+    <Content Include="Content\gameassets\levels\leveljun.json" />
+    <Content Include="Content\gameassets\levels\leveljun0.json" />
+    <Content Include="Content\gameassets\levels\leveljun2.json" />
+    <Content Include="Content\gameassets\levels\leveljungle.json" />
+    <Content Include="Content\gameassets\levels\leveljungle2.json" />
+    <Content Include="Content\gameassets\levels\leveltest.json" />
+    <Content Include="Content\gameassets\levels\leveltre.json" />
+    <Content Include="Content\gameassets\levels\nybana.json" />
+    <Content Include="Content\gameassets\levels\level2new.json" />
+    <Content Include="Content\gameassets\levels\leveljun1.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\game1.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -296,6 +311,7 @@
     <Content Include="Scripts\src\boot.js" />
     <Content Include="Scripts\src\gameover.js" />
     <Content Include="Scripts\src\gametitle.js" />
+    <Content Include="Scripts\src\gamewon.js" />
     <Content Include="Scripts\src\preload.js" />
     <Content Include="Scripts\src\thegame.js" />
     <Content Include="Scripts\_references.js" />

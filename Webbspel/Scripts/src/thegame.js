@@ -11,7 +11,7 @@ var Player = function (game, x, y)
     this.game.physics.enable(this, Phaser.Physics.ARCADE);
     
     this.maxVelocityX = 200;
-    this.maxVelocityY = 250;
+    this.maxVelocityY = 300;
     this.health = 3;
     this.body.setSize(25, 64, 0, 0);
 
@@ -63,11 +63,11 @@ Player.prototype.constructor = Player;
 //HP.prototype = Object.create(Phaser.Sprite.prototype);
 //HP.prototype.constructor = HP;
 
-
 var player = this.player;
 //var HP = this.HP;
 var cursors;
 var tossgranadeButton;
+var tossshurikenButton;
 var pickups;
 var food;
 var score = 0;
@@ -78,11 +78,15 @@ var pauseKey;
 var worldTimer;
 var timecounter = 0;
 var deathcounter = 2;
-var granadeCount = 1;
+var granadeCount = 0;
+var shurikenCount = 0;
+var flyingPotionCount = 0;
 
 var playerDir;
 
 var map;
+var flyingpotions;
+var canFly = false;
 
 
 var backgroundlayer;
@@ -90,7 +94,10 @@ var groundlayer;
 var foregroundlayer;
 
 var pickups;
+var shurikens;
 var granades;
+var currentFlyTime;
+
 var platforms;
 var platformDir = -1;
 var seconds;
@@ -102,6 +109,7 @@ var lavastop;
 var lavasbot;
 var fireballs;
 var bats;
+var level = 1;
 var batAni;
 var enemies;
 //var lifesleft = 3;
@@ -120,6 +128,7 @@ var turnV = -1;
 var turnH = -1;
 
 var hpText;
+var granadeText;
 
 var music;
 
@@ -127,8 +136,11 @@ var crates;
 var playerspeed;
 
 var grandeTimer = 0;
+var shurikenTimer = 0;
 var weaponGranades;
+var weaponShurikens;
 
+var potionTimer = 0;
 
 theGame.prototype = {
 
@@ -144,7 +156,30 @@ theGame.prototype = {
         this.BackgroundFilter();
         ////map
 
-        map = this.game.add.tilemap('map');
+
+
+
+
+        if (level == 1)
+
+        {
+            map = this.game.add.tilemap('map');
+            this.player = new Player(this.game, 80, 368 - 64);
+            this.game.camera.follow(this.player);
+        }
+
+        if (level == 2) {
+            map = this.game.add.tilemap('map2');
+            this.player = new Player(this.game, 16, 1568- 64);
+            this.game.camera.follow(this.player);
+        }
+
+        if (level == 3) {
+            map = this.game.add.tilemap('map3');
+            this.player = new Player(this.game, 16, 656 - 64);
+            this.game.camera.follow(this.player);
+        }
+
         map.addTilesetImage('tiles2');
         map.addTilesetImage('tiles2dark');
         map.addTilesetImage('tree');
@@ -165,9 +200,9 @@ theGame.prototype = {
 
         lives = this.game.add.group();
 
-        this.player = new Player(this.game, 80, 368-64);
+        //this.player = new Player(this.game, 16, 1568-64);
 
-        this.game.camera.follow(this.player);
+        //this.game.camera.follow(this.player);
 
         
         this.CreateObjects();
@@ -177,11 +212,16 @@ theGame.prototype = {
 
         this.PlatformTimer();
 
+        //granades
+        granadeText = this.game.add.text(16,96, 'Granades: 0', { font: "20px Arial", fill: '#003000'})
+        granadeText.fixedToCamera = true;
+        
+
         //score
-        scoreText = this.game.add.text(16, 16, 'Score: 0', { font: "30px Arial" });
+        scoreText = this.game.add.text(16, 16, 'Score: 0', { font: "40px Arial", fill: '#fff' });
         scoreText.fixedToCamera = true;
 
-        hpText = this.game.add.text(16, 40, 'hp: 0', { font: "30px Arial" });
+        hpText = this.game.add.text(16, 48, 'hp: 0', { font: "30px Arial", fill: '#fff' });
         hpText.fixedToCamera = true;
 
         //Music
@@ -193,7 +233,8 @@ theGame.prototype = {
 
 
         ////pausar spelet och timern
-        pauseKey = this.game.add.sprite(100, 100, 'pauseKey');
+        pauseKey = this.game.add.sprite(800-64, 96, 'pauseKey');
+        pauseKey.fixedToCamera = true;
         pauseKey.inputEnabled = true;
         pauseKey.events.onInputUp.add(function () {
             this.game.paused = true;
@@ -201,7 +242,8 @@ theGame.prototype = {
         this.game.input.onDown.add(function () { if (this.game.paused) this.game.paused = false; }, this);
 
         ////timer
-        worldTimer = this.game.add.text(150, 150, '0');
+        worldTimer = this.game.add.text(800-64, 32, '0');
+        worldTimer.fixedToCamera = true;
         currentTimer = this.game.time.create(false);
         currentTimer.loop(1000, this.updateTimer, this);
         currentTimer.start();
@@ -242,6 +284,11 @@ theGame.prototype = {
             platformDir = -1 * platformDir;
         
         }
+        //function returnNormal() {
+        //    this.player.body.gravity.y = 400;
+        //    canFly = false;
+        //    //potionTimer.stop();
+        //}
     },
 
     CreateObjects: function()
@@ -257,6 +304,17 @@ theGame.prototype = {
         weaponGranades.setAll('outOfBoundsKill', true);
         weaponGranades.setAll('checkWorldBounds', true);
 
+        //shurikens
+        //  Our shuriken group
+        weaponShurikens = this.game.add.group();
+        weaponShurikens.enableBody = true;
+        weaponShurikens.physicsBodyType = Phaser.Physics.ARCADE;
+        weaponShurikens.createMultiple(3, 'items1', 4);
+        weaponShurikens.setAll('anchor.x', -0.5);
+        weaponShurikens.setAll('anchor.y', 1);
+        weaponShurikens.setAll('outOfBoundsKill', true);
+        weaponShurikens.setAll('checkWorldBounds', true);
+
 
         bats = this.game.add.group();
         bats.enableBody = true;
@@ -269,8 +327,14 @@ theGame.prototype = {
         pickups = this.game.add.group();
         pickups.enableBody = true;
 
+        shurikens = this.game.add.group();
+        shurikens.enableBody = true;
+
         granades = this.game.add.group();
         granades.enableBody = true;
+
+        flyingpotions = this.game.add.group();
+        flyingpotions.enableBody = true;
 
         platforms = this.game.add.group();
         platforms.enableBody = true;
@@ -293,6 +357,8 @@ theGame.prototype = {
         lavasbot = this.game.add.group();
         lavasbot.enableBody = true;
 
+        //shurikens
+        map.createFromObjects('objects', 205, 'items1', 4, true, false, shurikens);
         //bats
         map.createFromObjects('enemies', 481, 'bat', 0, true, false, bats);
         //end
@@ -305,6 +371,8 @@ theGame.prototype = {
         map.createFromObjects('objects', 206, 'items1', 5, true, false, pickups);
         //platform
         map.createFromObjects('platforms', 73, 'moveplatform', 0, true, false, platforms);
+        //flyingPotion
+        map.createFromObjects('objects', 204, 'items1', 3, true, false, flyingpotions);
         //crate
         map.createFromObjects('platforms', 475, 'tilesobj', 49, true, false, crates);
         //spikes
@@ -353,9 +421,37 @@ this);
         //map.createFromObjects('position', 220, 'bear', 0,true,false,this.player);
     },
 
+
+    tossShuriken: function () {
+        
+        //  To avoid them being allowed to fire too fast we set a time limit
+        if (this.game.time.now > shurikenTimer) {
+            //  Grab the first bullet we can from the pool
+            weaponShuriken = weaponShurikens.getFirstExists(false);
+            //weaponShuriken.anchor.setTo(0.5, 0.5);
+            
+            if (weaponShuriken) {
+                //  And fire it
+                weaponShuriken.reset(this.player.x, this.player.y + 1);
+                if (this.player.scale.x == -1)
+                {
+                    weaponShuriken.body.angularVelocity = -800;
+                    weaponShuriken.body.velocity.x = -500;
+                }
+
+                if (this.player.scale.x == 1)
+                {
+                    weaponShuriken.body.angularVelocity = 800;
+                    weaponShuriken.body.velocity.x = 500;
+                }
+
+                shurikenTimer = this.game.time.now + 200;
+            }
+        }
+    },
+
     tossGranade: function ()
     {
-
         //To avoid them being allowed to fire too fast we set a time limit
         if (this.game.time.now > grandeTimer && granadeCount > 0)
         {
@@ -436,7 +532,8 @@ this);
     KeyControllers: function ()
     {
         cursors = this.game.input.keyboard.createCursorKeys();
-        tossgranadeButton = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        tossgranadeButton = this.game.input.keyboard.addKey(Phaser.Keyboard.G);
+        tossshurikenButton = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         if(deathcounter > 1)
             this.player.body.velocity.x = 0;
 
@@ -445,9 +542,25 @@ this);
             this.tossGranade();
             justPressed = true;
         }
+        if (tossshurikenButton.isDown) {
+
+            this.tossShuriken();
+        }
            
 
+        if (cursors.up.isDown && canFly == true) {
 
+            this.player.body.velocity.y = -this.player.maxVelocityX;
+            //this.player.animations.play('walk');
+
+        }
+
+        if (cursors.down.isDown && canFly == true) {
+
+            this.player.body.velocity.y = this.player.maxVelocityX;
+            //this.player.animations.play('walk');
+
+        }
         if (cursors.left.isDown && deathcounter > 1)
         {
             
@@ -517,6 +630,8 @@ this);
         this.game.physics.arcade.collide(crates, groundlayer);
         this.game.physics.arcade.collide(fireballs, lavasbot);
         this.game.physics.arcade.overlap(this.player, pickups, collectfood, null, this);
+        this.game.physics.arcade.overlap(this.player, shurikens, collectShuriken, null, this);
+        this.game.physics.arcade.overlap(this.player, flyingpotions, collectFlyingPotion, null, this);
         this.game.physics.arcade.overlap(this.player, granades, collectGranade, null, this);
         this.game.physics.arcade.overlap(this.player, ends, endLevel, null, this);
         this.game.physics.arcade.overlap(this.player, bats, takeDmgX, null, this);
@@ -528,8 +643,22 @@ this);
         
         function endLevel(player, endpos)
         {
-            this.game.state.start("GameOver");
+            
             music.pause();
+            if (level == 3)
+            {
+                level = 1;
+                this.game.state.start("Win");
+                score = 0;
+                timecounter = 0;
+            }
+            else
+            {
+
+            level++;
+            this.game.state.start('TheGame', true, false);
+            }
+
         }
 
 
@@ -560,6 +689,8 @@ this);
 
             this.game.state.start("GameOver");
             music.pause();
+            score = 0;
+            timecounter = 0;
 
             //this.player.kill();
             //this.player = new Player(this.game, 80, 368 - 64);
@@ -602,6 +733,17 @@ this);
             scoreText.text = 'Score:' + score;
         }
 
+        function collectShuriken(player, item) {
+            //ta bort
+            item.kill();
+            weaponShurikens.createMultiple(3, 'items1', 4);
+            
+            //lägger till score
+            score += 10;
+            //shurikenCount = shurikenCount + 1;
+            scoreText.text = 'Score:' + score;
+        }
+
         function collectfood(player, food) {
             //ta bort
             food.kill();
@@ -610,7 +752,21 @@ this);
             score += 10;
             scoreText.text = 'Score:' + score;
         }
+        function collectFlyingPotion(player,item)
+        {
+            item.kill();
+            player.body.gravity.y = 100;
+            canFly = true;
+            currentFlyTime = this.game.time.now;
 
+        }
+
+        if (canFly == true && this.game.time.now > currentFlyTime + 10000)
+        {
+            canFly = false;
+            this.player.body.gravity.y = 400;
+
+        }
         //this.UpdateHp();nd
 
         //booms.forEach(function (boom) {
