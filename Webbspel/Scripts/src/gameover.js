@@ -1,9 +1,13 @@
 var gameOver = function(game){}
-
+var gameScore;
 gameOver.prototype = {
-	init: function(score){
-		alert("You scored: "+score)
-	},
+    init: function (score) {
+        alert("You scored: " + score)
+        gameScore = score;
+    },
+    //init: function (timecounter) {
+    //    alert("Your time: " + timecounter)
+    //},
   	create: function(){
   		var gameOverTitle = this.game.add.sprite(400,160,"gameover");
 		gameOverTitle.anchor.setTo(0.5,0.5);

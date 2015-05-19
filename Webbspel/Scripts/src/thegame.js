@@ -109,7 +109,7 @@ var lavastop;
 var lavasbot;
 var fireballs;
 var bats;
-var level = 1;
+var level = 3;
 var batAni;
 var enemies;
 //var lifesleft = 3;
@@ -648,15 +648,15 @@ this);
             if (level == 3)
             {
                 level = 1;
-                this.game.state.start("Win");
-                score = 0;
-                timecounter = 0;
+                this.game.state.start("Win", true, false, score);
+                //score = 0;
+                //timecounter = 0;
             }
             else
             {
 
             level++;
-            this.game.state.start('TheGame', true, false);
+            this.game.state.start("GameOver", true, false, score);
             }
 
         }
@@ -687,7 +687,7 @@ this);
         if (this.player.health <= 0)
         {
 
-            this.game.state.start("GameOver");
+            this.game.state.start("GameOver",true,false, score);
             music.pause();
             score = 0;
             timecounter = 0;
