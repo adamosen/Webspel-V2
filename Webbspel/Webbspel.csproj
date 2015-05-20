@@ -312,6 +312,7 @@
     <Content Include="Scripts\src\gameover.js" />
     <Content Include="Scripts\src\gametitle.js" />
     <Content Include="Scripts\src\gamewon.js" />
+    <Content Include="Scripts\src\hscore.txt" />
     <Content Include="Scripts\src\preload.js" />
     <Content Include="Scripts\src\thegame.js" />
     <Content Include="Scripts\_references.js" />
