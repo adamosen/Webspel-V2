@@ -42,7 +42,8 @@ preload.prototype = {
         this.game.load.image('pauseKey', '/Content//gameassets//burger.png');
 
 	    //audio
-		this.game.load.audio("music1", "/Content/gameassets/music/Jazz Jackrabbit 2 - Medival Jam.m4a");
+        this.game.load.audio("music1", "/Content/gameassets/music/Jazz Jackrabbit 2 - Medival Jam.m4a");
+        this.game.load.spritesheet("play_pause", "/Content/gameassets/play_pause.png", 34, 34);
 	},
 	create: function ()
 	{

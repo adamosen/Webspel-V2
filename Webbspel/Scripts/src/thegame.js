@@ -109,7 +109,7 @@ var lavastop;
 var lavasbot;
 var fireballs;
 var bats;
-var level = 3;
+var level = 1;
 var batAni;
 var enemies;
 //var lifesleft = 3;
@@ -131,7 +131,9 @@ var hpText;
 var granadeText;
 
 var music;
-
+var flag = true;
+var button;
+var pauseAndUnauseMusicText;
 var crates;
 var playerspeed;
 
@@ -228,7 +230,12 @@ theGame.prototype = {
         music = this.game.add.audio("music1");
         music.play('', 0, 1, true);
         music.onLoop.add(this.playLevelMusic, this);
-
+        //pause music
+        button = this.game.add.button(800-64, 120, "play_pause", this.pauseMusicFunction, this, 0, 1);
+        button.fixedToCamera = true;
+        //pauseandunpausemusictext
+       
+        pauseAndUnauseMusicText = this.game.add.text(800 - 64, 118, 'PauseAndUnpauseMusic', { font: "10px Arial", fill: '#fff' });
         this.UpdateHp();
 
 
@@ -361,6 +368,7 @@ theGame.prototype = {
         map.createFromObjects('objects', 205, 'items1', 4, true, false, shurikens);
         //bats
         map.createFromObjects('enemies', 481, 'bat', 0, true, false, bats);
+        map.createFromObjects('enemies', 446, 'bat', 0, true, false, bats);
         //end
         map.createFromObjects('position', 216, 'items2', 0, true, false, ends);
         //burger
@@ -863,8 +871,21 @@ this);
 
     },
 
+    pauseMusicFunction: function () {
+
+        if (flag) {
+            music.pause();
+        }
+        else {
+            music.resume();
+        }
+
+        flag = !flag;
+
+    },
+
     render: function () {
-        this.game.debug.body(this.player, 'rgba(0, 255, 0, 0.9)');
+        //this.game.debug.body(this.player, 'rgba(0, 255, 0, 0.9)');
     },
 
     BackgroundFilter: function()
