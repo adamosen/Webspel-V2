@@ -85,6 +85,7 @@ select option{
 body{
     margin: auto;
     width: 960px;
+    height: 960px;
 }
 #wrapper
 {
@@ -111,4 +112,10 @@ nav{
 }
 #phaser-game{
     margin-left: 75px;
+}
+canvas{
+    width: 800px !important; 
+    height: 600px !important;
+    margin-left: 75px !important;
+    margin-top: -800px !important;
 }

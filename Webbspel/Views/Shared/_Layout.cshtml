@@ -36,13 +36,14 @@
 
 
         </nav>
-        <div id="content">
-            @RenderBody()
-        </div>
+        
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @RenderSection("scripts", required: false)
+    <div id="content">
+        @RenderBody()
+        @Scripts.Render("~/bundles/jquery")
+        @RenderSection("scripts", required: false)
+    </div>
 
     
 </body>
