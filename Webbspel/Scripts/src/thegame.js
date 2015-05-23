@@ -1,3 +1,6 @@
+//VERSION 0.9//
+ //senast ändrad 2015-05-23 av Adam//
+//Checka Script/phaser.min.js eller kolla på hemsidan för parametrar//
 
 var theGame = function (game) { };
 
@@ -5,138 +8,114 @@ var theGame = function (game) { };
 
 var Player = function (game, x, y)
 {
-
+    //spelaren skapas i konstruktor med all data den behöver.
     Phaser.Sprite.call(this, game, x, y, 'bear');
 
+    //fysik funkar
     this.game.physics.enable(this, Phaser.Physics.ARCADE);
     
+    //all data till spelaren
     this.maxVelocityX = 200;
     this.maxVelocityY = 300;
     this.health = 3;
     this.body.setSize(25, 64, 0, 0);
 
-    //this.body.collideWorldBounds = true;
     this.body.gravity.y = 400;
 
-    // Set ankarpunkt i centrum
+    // Sätter ankarpunkt i centrum
     this.anchor.setTo(0.5, 0.5);
 
     this.animations.add('walk', [1, 2, 3, 4, 5], 12, true);
     this.body.tilePadding.set(32);
     this.game.add.existing(this);
 
-
-
 };
 
-
+//behövs för att den ska skapas korrekt
 Player.prototype = Object.create(Phaser.Sprite.prototype);
 Player.prototype.constructor = Player;
-
-//var HP = function (game, x, y) {
-
-//    ////lives
-//    //Phaser.Sprite.call(this, game, x + (35 * i), y, 'hp');
-//    //var hp;
-//    //hp = this.game.add.group();
-
-//    //this.game.add.text(this.game.world.width - 100, 10, 'Lives : ', { font: '34px Arial', fill: '#fff' });
-
-//    //var dude = lives.create(game.world.width - 100 + (30 * i), 60, 'dude');
-//    //var lives;
-//    //lives = game.add.group();
-
-//    //for (var i = 0; i < 3; i++)
-//    //{
-    
-//    //    lives.create(x + (35 * i), y + 60, 'hp');
-
-//        Phaser.Sprite.call(this, game, x, y, 'hp');
-      
-//    //}
-
-
-//    //this.body.tilePadding.set(32);
-//    this.game.add.existing(this);
-
-//};
-//HP.prototype = Object.create(Phaser.Sprite.prototype);
-//HP.prototype.constructor = HP;
+;
 
 var player = this.player;
-//var HP = this.HP;
+
+//KEYBINDS
 var cursors;
 var tossgranadeButton;
 var tossshurikenButton;
-var pickups;
-var food;
+
+//SCORE
 var score = 0;
+
 var scoreText;
 var shurikenText;
-var justPressed = false;
-var bossAttacked = false;
 
 var pauseKey;
-var worldTimer;
+
 var timecounter = 0;
 var deathcounter = 2;
 var granadeCount = 0;
 var shurikenCount = 0;
 var flyingPotionCount = 0;
 
-var playerDir;
 
+var batAni;
+
+//MAP DATA
 var map;
-var flyingpotions;
-var canFly = false;
-
-
 var backgroundlayer;
 var groundlayer;
 var foregroundlayer;
+var level = 3;
+
+//några bools
+var canFly = false;
+var flag = true;
+var justPressed = false;
+var bossAttacked = false;
+
+
+//boss startspeed
 var bossSpeed;
 
+
+///PLATFORMSRIKTNING//
+var platformDir = -1;
+
+
+//TIMERS//
+var platformTimer;
+var potionTimer = 0;
+var currentFlyTime;
+var worldTimer;
+
+//ALLA MAPOBJEKT
+var platforms;
+var bosses;
 var pickups;
 var shurikens;
 var granades;
-var currentFlyTime;
-
-var platforms;
-var platformDir = -1;
-var seconds;
-var timer;
-var dmgCount;
-var bosses;
-var flag = true;
-var button;
-
+var flyingpotions;
+var lives;
+var booms;
+var pickups;
 var spikes;
 var lavastop;
 var lavasbot;
 var fireballs;
 var bats;
-var level = 3;
-var batAni;
 var enemies;
-//var lifesleft = 3;
-var pauseAndUnauseMusicText;
-
-var lives;
-var booms;
-//var boom;
-
 var ends;
-
 var hp;
 
+
+//filterdata
 var filter;
 var sprite;
-var turnV = -1;
-var turnH = -1;
 
 var hpText;
 var granadeText;
 
+///MUSIK///
 var music;
 
 var crates;
@@ -144,66 +123,57 @@ var playerspeed;
 
 var grandeTimer = 0;
 var shurikenTimer = 0;
+
+//weapons//
 var weaponGranades;
 var weaponShurikens;
 
-var potionTimer = 0;
+
 
 theGame.prototype = {
 
     create: function () {
         
-        //physics+bgcolor
+        //physics+bgcolor //ADAM
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
         this.game.stage.backgroundColor = '#009999';
 
 
 
-        //bgfilter
+        //Sätter in bakgrundsfiltert//ADAM
         this.BackgroundFilter();
-        ////map
 
 
-
-
+        //Laddar in olika data för olika banor// ADAM 2015-05-20
         if (level == 1)
 
         {
+            //score/tid ska vara 0 när man börjar om//
             score = 0;
             timecounter = 0;
             map = this.game.add.tilemap('map');
 
-            //backgroundlayer
+            //sätter bakgrundlagert
             backgroundlayer = map.createLayer('background');
 
             this.player = new Player(this.game, 80, 368 - 64);
             this.game.camera.follow(this.player);
-            //this.player.body.collideWorldBounds = true;
         }
 
         if (level == 2) {
             map = this.game.add.tilemap('map2');
-
-            //backgroundlayer
-            //backgroundlayer = map.createLayer('background');
-
             this.player = new Player(this.game, 16, 1568- 64);
             this.game.camera.follow(this.player);
-            //this.player.body.collideWorldBounds = true;
         }
 
         if (level == 3) {
             map = this.game.add.tilemap('map3');
-
-            //backgroundlayer
-            //backgroundlayer = map.createLayer('background');
-
             this.player = new Player(this.game, 16, 656 - 64);
             this.game.camera.follow(this.player);
-            //this.player.body.collideWorldBounds = true;
+
         }
         
-
+        //DATA SOM BEHÖVS TILL MAPS//
         map.addTilesetImage('tiles2');
         map.addTilesetImage('tiles2dark');
         map.addTilesetImage('tree');
@@ -212,10 +182,8 @@ theGame.prototype = {
         map.addTilesetImage('lava');
         map.addTilesetImage('bat');
         map.addTilesetImage('boss');
-        //map.setCollisionBetween(1, 100);
 
-
-        ////groundlayer
+        //Sätter groundlayer//DETTA ÄR LAGERT MAN GÅR PÅ//
         groundlayer = map.createLayer('ground');
         map.setCollisionBetween(1, 1000, true, 'ground');
         groundlayer.resizeWorld();
@@ -223,27 +191,23 @@ theGame.prototype = {
 
         lives = this.game.add.group();
 
-        //this.player = new Player(this.game, 16, 1568-64);
-
-        //this.game.camera.follow(this.player);
-
         
         this.CreateObjects();
     
-        ////foregroundlayer
+        //Sätter främre lagert
         foregroundlayer = map.createLayer('foreground');
 
         this.PlatformTimer();
 
-        //granades
+        //granades TEXT
         granadeText = this.game.add.text(16,96, 'Granades: 0', { font: "20px Arial", fill: '#003000'})
         granadeText.fixedToCamera = true;
         
-        //shurikens
+        //shurikens TEXT
         shurikenText = this.game.add.text(16, 96+ 32, 'Shurikens: 0', { font: "20px Arial", fill: '#009000' })
         shurikenText.fixedToCamera = true;
 
-        //score
+        //score TEXT
         scoreText = this.game.add.text(16, 16, 'Score: 0', { font: "40px Arial", fill: '#fff' });
         scoreText.fixedToCamera = true;
 
@@ -257,9 +221,12 @@ theGame.prototype = {
 
         this.UpdateHp();
 
+        //Pausar musiken//
+        PauseButton = this.game.add.button(800 - 48, 600 - 32, "PLAYPAUSE", this.pauseMusicFunction, this, 2, 3);
+        PauseButton.fixedToCamera = true;
 
         ////pausar spelet och timern
-        pauseKey = this.game.add.sprite(800-64, 96, 'pauseKey');
+        pauseKey = this.game.add.sprite(800 - 48, 600 - 64, 'PLAYPAUSE', 1);
         pauseKey.fixedToCamera = true;
         pauseKey.inputEnabled = true;
         pauseKey.events.onInputUp.add(function () {
@@ -267,12 +234,25 @@ theGame.prototype = {
         }, this);
         this.game.input.onDown.add(function () { if (this.game.paused) this.game.paused = false; }, this);
 
-        ////timer
+        ////SÄTTER DE OLIKA TIMERS////ADAM
         worldTimer = this.game.add.text(800-64, 32, '0');
         worldTimer.fixedToCamera = true;
         currentTimer = this.game.time.create(false);
         currentTimer.loop(1000, this.updateTimer, this);
         currentTimer.start();
+    },
+
+    pauseMusicFunction: function () {
+
+        if (flag) {
+            music.pause();
+        }
+        else {
+            music.resume();
+        }
+
+        flag = !flag;
+
     },
 
     updateTimer: function () {
@@ -283,7 +263,7 @@ theGame.prototype = {
 
     UpdateHp: function()
     {
-        //  Lives   
+       ///Sätter liv till spelarens liv/// skapar sprites för liven i hörnet
         for (var i = 0; i < this.player.health; i++) {
             hp = lives.create(80 - 35 * i, 64, 'hp');
             hp.fixedToCamera = true;
@@ -297,12 +277,12 @@ theGame.prototype = {
     PlatformTimer: function()
     {
         
-        timer = this.game.time.create(false);
+        platformTimer = this.game.time.create(false);
 
-        //  saker händer efter 2 sekunder
-        timer.loop(2000, ChangePlatformDir, this);
+        //  saker händer efter 2 sekunder sen körs funktion
+        platformTimer.loop(2000, ChangePlatformDir, this);
 
-        timer.start();
+        platformTimer.start();
 
 
         function ChangePlatformDir()
@@ -310,32 +290,25 @@ theGame.prototype = {
             platformDir = -1 * platformDir;
         
         }
-        //function returnNormal() {
-        //    this.player.body.gravity.y = 400;
-        //    canFly = false;
-        //    //potionTimer.stop();
-        //}
+
     },
 
     CreateObjects: function()
     {
         //granades
-        //  Our granade group
+        // granatgruppen //OBS DESSA ÄR FÖR DE VAPEN SOM MAN KASTAR!// ADAM
         weaponGranades = this.game.add.group();
         weaponGranades.enableBody = true;
         weaponGranades.physicsBodyType = Phaser.Physics.ARCADE;
-        //weaponGranades.createMultiple(5, 'items1', 2);
-        //weaponGranades.setAll('anchor.x', -0.5);
-        //weaponGranades.setAll('anchor.y', 1);
         weaponGranades.setAll('outOfBoundsKill', true);
         weaponGranades.setAll('checkWorldBounds', true);
 
         //shurikens
-        //  Our shuriken group
+        // shurikengruppen //OBS DESSA ÄR FÖR DE VAPEN SOM MAN KASTAR!// ADAM
         weaponShurikens = this.game.add.group();
         weaponShurikens.enableBody = true;
         weaponShurikens.physicsBodyType = Phaser.Physics.ARCADE;
-        //weaponShurikens.createMultiple(1, 'items1', 4);
+        weaponShurikens.createMultiple(10, 'items1', 4);
         weaponShurikens.setAll('anchor.x', -0.5);
         weaponShurikens.setAll('anchor.y', 1);
         weaponShurikens.setAll('outOfBoundsKill', true);
@@ -390,8 +363,10 @@ theGame.prototype = {
         //shurikens
         map.createFromObjects('objects', 205, 'items1', 4, true, false, shurikens);
         //bats
+        map.createFromObjects('enemies', 446, 'bat', 0, true, false, bats);
         map.createFromObjects('enemies', 481, 'bat', 0, true, false, bats);
         //end
+
         map.createFromObjects('position', 216, 'items2', 0, true, false, ends);
         //burger
         map.createFromObjects('objects', 201, 'items1', 0, true, false, pickups);
@@ -415,9 +390,13 @@ this);
         //fireballs
         map.createFromObjects('danger', 476, 'danger', 0, true, false, fireballs);
         //lavatypes
+
         map.createFromObjects('danger', 210, 'lava', 3, true, false, lavastop);
         map.createFromObjects('danger', 213, 'lava', 6, true, false, lavasbot);
-        //bats
+        map.createFromObjects('danger', 227, 'lava', 3, true, false, lavastop);
+        map.createFromObjects('danger', 436, 'lava', 6, true, false, lavasbot);
+
+        //bats gör....
         bats.forEach(function (bat)
         {            
         batAni = bat.animations.add('wake', [0, 1, 2, 3, 4, 5], 6, false);
@@ -425,8 +404,8 @@ this);
         bat.body.tilePadding.set(32);
         },
         this);
-        //bosses
-        
+
+        //Alla bossar har...
         bosses.forEach(function (boss) {
             bossAttacked = false;
             boss.HP = 6;
@@ -436,13 +415,6 @@ this);
             boss.anchor.setTo(0.5, 0.5);
         },
 this);
-
-//        weaponGranades.forEach(function (granade)
-//        {
-//            granade.body.gravity.y = 400;
-//            granade.body.bounce.set(0.5);
-//        },
-//this);
 
         lavastop.forEach(function (lava) {
             lava.animations.add('moving', [3, 4, 5], 2, true);
@@ -458,16 +430,14 @@ this);
         },
 this);
 
-
-        //map.createFromObjects('position', 220, 'bear', 0,true,false,this.player);
     },
 
 
     tossShuriken: function () {
         
-        //  To avoid them being allowed to fire too fast we set a time limit
+        //  så att man inte kan kasta för fort finns den en tidsbegränsning...
         if (this.game.time.now > shurikenTimer) {
-            //  Grab the first bullet we can from the pool
+            //  tar den första som finns i gruppen...
             weaponShuriken = weaponShurikens.getFirstExists(false);
 
             weaponShurikens.forEach(function (shuriken) {
@@ -478,7 +448,7 @@ this);
             this);
             
             if (weaponShuriken) {
-                //  And fire it
+                //  Kastar den!
                 weaponShuriken.reset(this.player.x, this.player.y + 1);
                 if (this.player.scale.x == -1)
                 {
@@ -500,15 +470,14 @@ this);
 
     tossGranade: function ()
     {
-        //To avoid them being allowed to fire too fast we set a time limit
+        //  så att man inte kan kasta för fort finns den en tidsbegränsning...
         if (this.game.time.now > grandeTimer && granadeCount > 0)
         {
             
-            //  Grab the first bullet we can from the pool
-            //weaponGranade = weaponGranades.getFirstExists(false);
+            //skapar en granat//
             weaponGranade = weaponGranades.create(0, 0, 'items1', 2);
 
-
+            
             weaponGranades.forEach(function (weaponGranade)
             {
                 weaponGranade.anchor.setTo(0.5, 0.5);
@@ -518,10 +487,20 @@ this);
                     
                     justPressed = false;
                     bats.forEach(function (bat) {
-
+                        ///dom dödar bats/
                         if (Phaser.Math.distance(weaponGranade.x, weaponGranade.y, bat.x, bat.y) <= 150)
                         {
                             bat.kill();
+
+                        }
+
+                    },
+this);
+
+                    bosses.forEach(function (b) {
+                        ///dom dödar bossar/
+                        if (Phaser.Math.distance(weaponGranade.x, weaponGranade.y, b.x, b.y) <= 150) {
+                            b.kill();
 
                         }
 
@@ -556,10 +535,8 @@ this);
                 weaponGranade.allowRotation = true;
                 weaponGranade.body.gravity.y = 400;
                 weaponGranade.body.bounce.set(0.5);
-                //weaponGranade.body.angularVelocity = 200;
-                //weaponGranade.friction = new Phaser.Point(1, 0.5);
-                //var rotate = weaponGranade.rotation;
-             //  And fire it
+
+             //  Kastar granat
                 weaponGranade.reset(this.player.x, this.player.y + 1);
                 if (this.player.scale.x == 1)
                 {
@@ -591,8 +568,6 @@ this);
         if (tossgranadeButton.isDown && justPressed == false) {
           
             this.tossGranade();
-            //if(granadeCount > 0)
-            //granadeCount--;
             justPressed = true;
         }
         if (tossshurikenButton.isDown) {
@@ -604,14 +579,12 @@ this);
         if (cursors.up.isDown && canFly == true) {
 
             this.player.body.velocity.y = -this.player.maxVelocityX;
-            //this.player.animations.play('walk');
 
         }
 
         if (cursors.down.isDown && canFly == true) {
 
             this.player.body.velocity.y = this.player.maxVelocityX;
-            //this.player.animations.play('walk');
 
         }
         if (cursors.left.isDown && deathcounter > 1)
@@ -632,7 +605,6 @@ this);
         }
         else
         {
-            //player.animations.stop();
             this.player.frame = 0;
         }
 
@@ -701,23 +673,20 @@ this);
         filter.update();
         
         hpText.text = this.player.health;
-        //Collision
-
-        this.game.physics.arcade.collide(this.player, groundlayer);
-        this.game.physics.arcade.collide(this.player, lavasbot, takeDmgFatal, null, this);
-        this.game.physics.arcade.collide(this.player, bosses, takeDmgFatal, null, this);
-        this.game.physics.arcade.collide(this.enemy, groundlayer);
-        this.game.physics.arcade.collide(weaponGranades, groundlayer);
-        this.game.physics.arcade.overlap(bats,groundlayer);
-        //this.game.physics.arcade.overlap(bats, this.player);
-
-
+        //KOLLISION KÖRS FÖR 2 OBJEKT, SEDAN KÖRS EN FUNKTION OM SÅ VILL//
         this.game.physics.arcade.collide(this.player, platforms);
         this.game.physics.arcade.collide(bosses, groundlayer);
         this.game.physics.arcade.collide(this.player, bosses);
         this.game.physics.arcade.collide(this.player, crates);
         this.game.physics.arcade.collide(crates, groundlayer);
         this.game.physics.arcade.collide(fireballs, lavasbot);
+        this.game.physics.arcade.collide(this.player, groundlayer);
+        this.game.physics.arcade.collide(this.player, lavasbot, takeDmgFatal, null, this);
+        this.game.physics.arcade.collide(this.player, bosses, takeDmgFatal, null, this);
+        this.game.physics.arcade.collide(this.enemy, groundlayer);
+        this.game.physics.arcade.collide(weaponGranades, groundlayer);
+        //ÖVERLAPPNING KÖRS FÖR 2 OBJEKT, SEDAN KÖRS EN FUNKTION OM SÅ VILL//
+        this.game.physics.arcade.overlap(bats,groundlayer);
         this.game.physics.arcade.overlap(weaponShurikens, bosses, dealDmg, null, this);
         this.game.physics.arcade.overlap(weaponShurikens, bats, killEnemy, null, this);
         this.game.physics.arcade.overlap(this.player, pickups, collectfood, null, this);
@@ -741,7 +710,6 @@ this);
                 level = 1;
 
                 this.game.state.start("Win", true, false, score);
-                //score = 0;
                 timecounter = 0;
             }
             else
@@ -754,19 +722,23 @@ this);
 
         }
 
-        function dealDmg(weapon, enemy) {
+        function dealDmg(weapon, enemy)
+        {
             enemy.HP--;
             weapon.kill();
 
-            if(enemy.HP == 0)
-            enemy.kill();
+            if (enemy.HP == 0)
+            {
+                enemy.kill();
+            }
+
 
 
         }
 
-        function killEnemy(weapon, enemy) {
+        function killEnemy(weapon, enemy)
+        {
             enemy.kill();
-
 
         }
 
@@ -780,7 +752,7 @@ this);
 
             if (live) {
                 live.kill();
-                //fataldmg
+                //spelaren dör dirket// adam
                 this.player.health = 0;
                  
             }
@@ -797,12 +769,6 @@ this);
             music.pause();
             score = 0;
             timecounter = 0;
-
-            //this.player.kill();
-            //this.player = new Player(this.game, 80, 368 - 64);
-            //this.game.camera.follow(this.player);
-            //this.player.health = 3;
-            //this.UpdateHp();
         }
 
         function takeDmgX(player, danger)
@@ -818,7 +784,7 @@ this);
                     live.kill();
                     player.body.velocity.x = -danger.body.velocity.x
                     player.body.velocity.y = -danger.body.velocity.y
-                    //loselife
+                    //tappar liv// adam
                     this.player.health--;
 
                 }
@@ -833,24 +799,17 @@ this);
             //ta bort
             pickup.kill();
 
-            //lägger till score
-            score += 10;
+            // ADAM 2015-05-23
             granadeCount = granadeCount + 1;
             granadeText.text = 'Granade:' + granadeCount;
-            scoreText.text = 'Score:' + score;
         }
 
         function collectShuriken(player, item) {
-            //ta bort
+            // ADAM 2015-05-23
+            //tar bort item
             item.kill();
-            weaponShurikens.createMultiple(1, 'items1', 4);
-            shurikenCount = weaponShurikens.countLiving();
-
-            //lägger till score
-            score += 10;
-            //shurikenCount = shurikenCount + 1;
-            scoreText.text = 'Score:' + score;
-            shurikenText.text = 'Shurikens:' + granadeCount;
+            shurikenCount = shurikenCount + 1;
+            shurikenText.text = 'Shurikens:' + shurikenCount;
         }
 
         function collectfood(player, food) {
@@ -876,29 +835,7 @@ this);
             this.player.body.gravity.y = 400;
 
         }
-        //this.UpdateHp();nd
 
-        //booms.forEach(function (boom) {
-        //    if (boom.animations.currentAnim.frame == 3)
-        //    {
-        //        boom.body = null;
-        //        boom.destroy();
-        //    }
-        //},
-        //this);
-
-//        bosses.forEach(function (boss) {
-//            boss.animations.play('move');        
-//            boss.body.bounce.set(1);
-//            boss.body.velocity.x = bossSpeed;
-//            //if(boss.body.touching.left || boss.body.touching.right)
-//            //{
-//            //    bossSpeed = -bossSpeed;
-//            //}
-                
-            
-//        },
-//this);
 
         lavasbot.forEach(function (lava) {
             lava.animations.play('moving');
@@ -909,19 +846,6 @@ this);
 
         },
         this);
-
-//        weaponGranades.forEach(function (weaponGranade) {
-
-//            if (weaponGranade.body.velocity > 0) {
-//                weaponGranade.body.angularVelocity = 500;
-//            }
-//            else if (weaponGranade.body.angularVelocity < 0) {
-//                weaponGranade.body.angularVelocity = -500;
-//            }
-
-//        },
-//this);
-
 
         fireballs.forEach(function (fireball) {
             fireball.anchor.setTo(0.5, 0.5);
@@ -970,13 +894,6 @@ this);
         },
         this);
 
-        //        booms.forEach(function (boom)
-        //        {
-        //            boom.animations.add('boom', [0, 1, 2, 3, 2, 1, 0], true);
-
-        //        },
-        //this);
-
         //Kontroll
         this.KeyControllers();
         playerDir = this.player.scale.x;
@@ -985,13 +902,15 @@ this);
 
     },
 
+
+    ///DETTA ÄR FÖR ATT RENDERA HITBOX FÖR SPELAREN FÖR DEBUG///
     //render: function () {
     //    this.game.debug.body(this.player, 'rgba(0, 255, 0, 0.9)');
     //},
 
     BackgroundFilter: function()
 {
-
+        ///DETTA ÄR ETT BAKGRUNDSFILTER/// ändrad av adam 2015-05-20
         // Från http://glslsandbox.com/
 
     var fragmentSrc = [
