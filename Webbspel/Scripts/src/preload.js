@@ -14,10 +14,11 @@ preload.prototype = {
 		this.game.load.image("higher", "/Content/assets/higher.png");
 		this.game.load.image("lower", "/Content/assets/lower.png");
 		this.game.load.image("gameover", "/Content/assets/gameover.png");
+		this.game.load.image("wingame", "/Content/assets/wingame.png");
 	    //map
 		this.game.load.tilemap('map', '/Content/gameassets/levels/leveljun0.json', null, Phaser.Tilemap.TILED_JSON);
-		this.game.load.tilemap('map2', '/Content/gameassets/levels/level2new.json', null, Phaser.Tilemap.TILED_JSON);
-		this.game.load.tilemap('map3', '/Content/gameassets/levels/leveltre.json', null, Phaser.Tilemap.TILED_JSON);
+		this.game.load.tilemap('map2', '/Content/gameassets/levels/level2newest2.json', null, Phaser.Tilemap.TILED_JSON);
+		this.game.load.tilemap('map3', '/Content/gameassets/levels/level3tree.json', null, Phaser.Tilemap.TILED_JSON);
 
 		this.game.load.image('burger', '/Content/gameassets/burger.png');
 		this.game.load.image('tiles2', '/Content/gameassets/tiles2.png');
@@ -37,13 +38,13 @@ preload.prototype = {
         this.game.load.spritesheet('bear', '/Content/gameassets/charsprites.png', 32, 64);
         this.game.load.spritesheet('bat', '/Content/gameassets/bat.png', 32, 32);
         this.game.load.spritesheet('hp', '/Content/gameassets/hp.png', 32, 32);
+        this.game.load.spritesheet('boss', '/Content/gameassets/boss.png', 96, 96);
 
 	    //pauseKey
         this.game.load.image('pauseKey', '/Content//gameassets//burger.png');
 
 	    //audio
-        this.game.load.audio("music1", "/Content/gameassets/music/Jazz Jackrabbit 2 - Medival Jam.m4a");
-        this.game.load.spritesheet("play_pause", "/Content/gameassets/play_pause.png", 34, 34);
+		this.game.load.audio("music1", "/Content/gameassets/music/Jazz Jackrabbit 2 - Medival Jam.m4a");
 	},
 	create: function ()
 	{

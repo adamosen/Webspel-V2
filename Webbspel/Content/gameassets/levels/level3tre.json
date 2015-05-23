@@ -29,8 +29,8 @@
                  "type":"food",
                  "visible":true,
                  "width":0,
-                 "x":576,
-                 "y":656
+                 "x":704,
+                 "y":688
                 }, 
                 {
                  "gid":203,
@@ -61,8 +61,8 @@
                  "type":"food",
                  "visible":true,
                  "width":0,
-                 "x":352,
-                 "y":688
+                 "x":368,
+                 "y":672
                 }, 
                 {
                  "gid":206,
@@ -125,24 +125,8 @@
                  "type":"weapon",
                  "visible":true,
                  "width":0,
-                 "x":2752,
-                 "y":560
-                }, 
-                {
-                 "gid":204,
-                 "height":0,
-                 "id":26,
-                 "name":"potion",
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"hp",
-                 "visible":true,
-                 "width":0,
-                 "x":2736,
-                 "y":432
+                 "x":112,
+                 "y":1152
                 }, 
                 {
                  "gid":218,
@@ -159,6 +143,376 @@
                  "width":0,
                  "x":2832,
                  "y":400
+                }, 
+                {
+                 "gid":205,
+                 "height":0,
+                 "id":330,
+                 "name":"shuriken",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"weapon",
+                 "visible":true,
+                 "width":0,
+                 "x":1312,
+                 "y":944
+                }, 
+                {
+                 "gid":205,
+                 "height":0,
+                 "id":331,
+                 "name":"shuriken",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"weapon",
+                 "visible":true,
+                 "width":0,
+                 "x":1328,
+                 "y":912
+                }, 
+                {
+                 "gid":205,
+                 "height":0,
+                 "id":332,
+                 "name":"shuriken",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"weapon",
+                 "visible":true,
+                 "width":0,
+                 "x":1344,
+                 "y":944
+                }, 
+                {
+                 "gid":205,
+                 "height":0,
+                 "id":333,
+                 "name":"shuriken",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"weapon",
+                 "visible":true,
+                 "width":0,
+                 "x":160,
+                 "y":1184
+                }, 
+                {
+                 "gid":205,
+                 "height":0,
+                 "id":334,
+                 "name":"shuriken",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"weapon",
+                 "visible":true,
+                 "width":0,
+                 "x":160,
+                 "y":1136
+                }, 
+                {
+                 "gid":205,
+                 "height":0,
+                 "id":335,
+                 "name":"shuriken",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"weapon",
+                 "visible":true,
+                 "width":0,
+                 "x":64,
+                 "y":1120
+                }, 
+                {
+                 "gid":205,
+                 "height":0,
+                 "id":336,
+                 "name":"shuriken",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"weapon",
+                 "visible":true,
+                 "width":0,
+                 "x":112,
+                 "y":1104
+                }, 
+                {
+                 "gid":206,
+                 "height":0,
+                 "id":337,
+                 "name":"banana",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"food",
+                 "visible":true,
+                 "width":0,
+                 "x":320,
+                 "y":1184
+                }, 
+                {
+                 "gid":206,
+                 "height":0,
+                 "id":338,
+                 "name":"banana",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"food",
+                 "visible":true,
+                 "width":0,
+                 "x":464,
+                 "y":1184
+                }, 
+                {
+                 "gid":206,
+                 "height":0,
+                 "id":339,
+                 "name":"banana",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"food",
+                 "visible":true,
+                 "width":0,
+                 "x":608,
+                 "y":1184
+                }, 
+                {
+                 "gid":206,
+                 "height":0,
+                 "id":340,
+                 "name":"banana",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"food",
+                 "visible":true,
+                 "width":0,
+                 "x":752,
+                 "y":1184
+                }, 
+                {
+                 "gid":206,
+                 "height":0,
+                 "id":341,
+                 "name":"banana",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"food",
+                 "visible":true,
+                 "width":0,
+                 "x":896,
+                 "y":1184
+                }, 
+                {
+                 "gid":481,
+                 "height":0,
+                 "id":342,
+                 "name":"bat",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"enemy",
+                 "visible":true,
+                 "width":0,
+                 "x":1824,
+                 "y":1168
+                }, 
+                {
+                 "gid":481,
+                 "height":0,
+                 "id":343,
+                 "name":"bat",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"enemy",
+                 "visible":true,
+                 "width":0,
+                 "x":2208,
+                 "y":608
+                }, 
+                {
+                 "gid":73,
+                 "height":0,
+                 "id":344,
+                 "name":"movestone",
+                 "properties":
+                    {
+                     "distance":"50",
+                     "name":"platform",
+                     "velo":"50"
+                    },
+                 "rotation":0,
+                 "type":"platform",
+                 "visible":true,
+                 "width":0,
+                 "x":2720,
+                 "y":544
+                }, 
+                {
+                 "gid":203,
+                 "height":0,
+                 "id":345,
+                 "name":"granade",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"weapon",
+                 "visible":true,
+                 "width":0,
+                 "x":2624,
+                 "y":512
+                }, 
+                {
+                 "gid":201,
+                 "height":0,
+                 "id":346,
+                 "name":"burger",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"food",
+                 "visible":true,
+                 "width":0,
+                 "x":2688,
+                 "y":384
+                }, 
+                {
+                 "gid":201,
+                 "height":0,
+                 "id":347,
+                 "name":"burger",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"food",
+                 "visible":true,
+                 "width":0,
+                 "x":2752,
+                 "y":304
+                }, 
+                {
+                 "gid":201,
+                 "height":0,
+                 "id":348,
+                 "name":"burger",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"food",
+                 "visible":true,
+                 "width":0,
+                 "x":2688,
+                 "y":304
+                }, 
+                {
+                 "gid":201,
+                 "height":0,
+                 "id":349,
+                 "name":"burger",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"food",
+                 "visible":true,
+                 "width":0,
+                 "x":2640,
+                 "y":336
+                }, 
+                {
+                 "gid":201,
+                 "height":0,
+                 "id":350,
+                 "name":"burger",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"food",
+                 "visible":true,
+                 "width":0,
+                 "x":2800,
+                 "y":336
+                }, 
+                {
+                 "gid":201,
+                 "height":0,
+                 "id":351,
+                 "name":"burger",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"food",
+                 "visible":true,
+                 "width":0,
+                 "x":2752,
+                 "y":384
+                }, 
+                {
+                 "gid":492,
+                 "height":0,
+                 "id":352,
+                 "name":"boss",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"enemy",
+                 "visible":true,
+                 "width":0,
+                 "x":4640,
+                 "y":1616
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -971,6 +1325,582 @@
                  "width":0,
                  "x":2848,
                  "y":592
+                }, 
+                {
+                 "gid":210,
+                 "height":0,
+                 "id":283,
+                 "name":"lava",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"danger",
+                 "visible":true,
+                 "width":0,
+                 "x":3920,
+                 "y":1536
+                }, 
+                {
+                 "gid":213,
+                 "height":0,
+                 "id":284,
+                 "name":"lava",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"danger",
+                 "visible":true,
+                 "width":0,
+                 "x":3936,
+                 "y":1568
+                }, 
+                {
+                 "gid":213,
+                 "height":0,
+                 "id":285,
+                 "name":"lava",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"danger",
+                 "visible":true,
+                 "width":0,
+                 "x":3952,
+                 "y":1568
+                }, 
+                {
+                 "gid":210,
+                 "height":0,
+                 "id":286,
+                 "name":"lava",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"danger",
+                 "visible":true,
+                 "width":0,
+                 "x":4016,
+                 "y":1536
+                }, 
+                {
+                 "gid":210,
+                 "height":0,
+                 "id":287,
+                 "name":"lava",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"danger",
+                 "visible":true,
+                 "width":0,
+                 "x":3728,
+                 "y":1536
+                }, 
+                {
+                 "gid":213,
+                 "height":0,
+                 "id":288,
+                 "name":"lava",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"danger",
+                 "visible":true,
+                 "width":0,
+                 "x":3696,
+                 "y":1568
+                }, 
+                {
+                 "gid":213,
+                 "height":0,
+                 "id":289,
+                 "name":"lava",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"danger",
+                 "visible":true,
+                 "width":0,
+                 "x":3760,
+                 "y":1568
+                }, 
+                {
+                 "gid":210,
+                 "height":0,
+                 "id":290,
+                 "name":"lava",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"danger",
+                 "visible":true,
+                 "width":0,
+                 "x":3760,
+                 "y":1536
+                }, 
+                {
+                 "gid":210,
+                 "height":0,
+                 "id":291,
+                 "name":"lava",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"danger",
+                 "visible":true,
+                 "width":0,
+                 "x":3984,
+                 "y":1536
+                }, 
+                {
+                 "gid":210,
+                 "height":0,
+                 "id":292,
+                 "name":"lava",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"danger",
+                 "visible":true,
+                 "width":0,
+                 "x":3696,
+                 "y":1536
+                }, 
+                {
+                 "gid":213,
+                 "height":0,
+                 "id":293,
+                 "name":"lava",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"danger",
+                 "visible":true,
+                 "width":0,
+                 "x":3728,
+                 "y":1568
+                }, 
+                {
+                 "gid":213,
+                 "height":0,
+                 "id":294,
+                 "name":"lava",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"danger",
+                 "visible":true,
+                 "width":0,
+                 "x":3920,
+                 "y":1568
+                }, 
+                {
+                 "gid":210,
+                 "height":0,
+                 "id":295,
+                 "name":"lava",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"danger",
+                 "visible":true,
+                 "width":0,
+                 "x":3888,
+                 "y":1536
+                }, 
+                {
+                 "gid":210,
+                 "height":0,
+                 "id":296,
+                 "name":"lava",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"danger",
+                 "visible":true,
+                 "width":0,
+                 "x":4048,
+                 "y":1536
+                }, 
+                {
+                 "gid":210,
+                 "height":0,
+                 "id":297,
+                 "name":"lava",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"danger",
+                 "visible":true,
+                 "width":0,
+                 "x":3792,
+                 "y":1536
+                }, 
+                {
+                 "gid":210,
+                 "height":0,
+                 "id":298,
+                 "name":"lava",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"danger",
+                 "visible":true,
+                 "width":0,
+                 "x":3952,
+                 "y":1536
+                }, 
+                {
+                 "gid":213,
+                 "height":0,
+                 "id":299,
+                 "name":"lava",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"danger",
+                 "visible":true,
+                 "width":0,
+                 "x":4016,
+                 "y":1568
+                }, 
+                {
+                 "gid":213,
+                 "height":0,
+                 "id":300,
+                 "name":"lava",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"danger",
+                 "visible":true,
+                 "width":0,
+                 "x":4048,
+                 "y":1568
+                }, 
+                {
+                 "gid":213,
+                 "height":0,
+                 "id":301,
+                 "name":"lava",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"danger",
+                 "visible":true,
+                 "width":0,
+                 "x":3984,
+                 "y":1568
+                }, 
+                {
+                 "gid":213,
+                 "height":0,
+                 "id":302,
+                 "name":"lava",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"danger",
+                 "visible":true,
+                 "width":0,
+                 "x":3888,
+                 "y":1568
+                }, 
+                {
+                 "gid":213,
+                 "height":0,
+                 "id":303,
+                 "name":"lava",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"danger",
+                 "visible":true,
+                 "width":0,
+                 "x":3792,
+                 "y":1568
+                }, 
+                {
+                 "gid":210,
+                 "height":0,
+                 "id":304,
+                 "name":"lava",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"danger",
+                 "visible":true,
+                 "width":0,
+                 "x":3936,
+                 "y":1536
+                }, 
+                {
+                 "gid":210,
+                 "height":0,
+                 "id":305,
+                 "name":"lava",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"danger",
+                 "visible":true,
+                 "width":0,
+                 "x":3664,
+                 "y":1536
+                }, 
+                {
+                 "gid":210,
+                 "height":0,
+                 "id":306,
+                 "name":"lava",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"danger",
+                 "visible":true,
+                 "width":0,
+                 "x":3632,
+                 "y":1536
+                }, 
+                {
+                 "gid":213,
+                 "height":0,
+                 "id":307,
+                 "name":"lava",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"danger",
+                 "visible":true,
+                 "width":0,
+                 "x":3632,
+                 "y":1568
+                }, 
+                {
+                 "gid":213,
+                 "height":0,
+                 "id":308,
+                 "name":"lava",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"danger",
+                 "visible":true,
+                 "width":0,
+                 "x":3664,
+                 "y":1568
+                }, 
+                {
+                 "gid":210,
+                 "height":0,
+                 "id":309,
+                 "name":"lava",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"danger",
+                 "visible":true,
+                 "width":0,
+                 "x":3600,
+                 "y":1536
+                }, 
+                {
+                 "gid":210,
+                 "height":0,
+                 "id":310,
+                 "name":"lava",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"danger",
+                 "visible":true,
+                 "width":0,
+                 "x":3568,
+                 "y":1536
+                }, 
+                {
+                 "gid":213,
+                 "height":0,
+                 "id":311,
+                 "name":"lava",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"danger",
+                 "visible":true,
+                 "width":0,
+                 "x":3600,
+                 "y":1568
+                }, 
+                {
+                 "gid":213,
+                 "height":0,
+                 "id":312,
+                 "name":"lava",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"danger",
+                 "visible":true,
+                 "width":0,
+                 "x":3568,
+                 "y":1568
+                }, 
+                {
+                 "gid":210,
+                 "height":0,
+                 "id":319,
+                 "name":"lava",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"danger",
+                 "visible":true,
+                 "width":0,
+                 "x":3536,
+                 "y":1536
+                }, 
+                {
+                 "gid":210,
+                 "height":0,
+                 "id":320,
+                 "name":"lava",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"danger",
+                 "visible":true,
+                 "width":0,
+                 "x":3504,
+                 "y":1536
+                }, 
+                {
+                 "gid":213,
+                 "height":0,
+                 "id":321,
+                 "name":"lava",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"danger",
+                 "visible":true,
+                 "width":0,
+                 "x":3536,
+                 "y":1568
+                }, 
+                {
+                 "gid":213,
+                 "height":0,
+                 "id":322,
+                 "name":"lava",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"danger",
+                 "visible":true,
+                 "width":0,
+                 "x":3472,
+                 "y":1568
+                }, 
+                {
+                 "gid":210,
+                 "height":0,
+                 "id":323,
+                 "name":"lava",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"danger",
+                 "visible":true,
+                 "width":0,
+                 "x":3472,
+                 "y":1536
+                }, 
+                {
+                 "gid":213,
+                 "height":0,
+                 "id":324,
+                 "name":"lava",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"danger",
+                 "visible":true,
+                 "width":0,
+                 "x":3504,
+                 "y":1568
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1042,7 +1972,7 @@
                  "visible":true,
                  "width":0,
                  "x":2512,
-                 "y":624
+                 "y":544
                 }, 
                 {
                  "gid":73,
@@ -1059,8 +1989,8 @@
                  "type":"platform",
                  "visible":true,
                  "width":0,
-                 "x":2704,
-                 "y":608
+                 "x":2624,
+                 "y":560
                 }, 
                 {
                  "gid":475,
@@ -1075,8 +2005,8 @@
                  "type":"platform",
                  "visible":true,
                  "width":0,
-                 "x":1776,
-                 "y":736
+                 "x":992,
+                 "y":960
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1201,582 +2131,6 @@
                  "width":0,
                  "x":2288,
                  "y":1456
-                }, 
-                {
-                 "gid":210,
-                 "height":0,
-                 "id":246,
-                 "name":"lava",
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"danger",
-                 "visible":true,
-                 "width":0,
-                 "x":3504,
-                 "y":1536
-                }, 
-                {
-                 "gid":210,
-                 "height":0,
-                 "id":247,
-                 "name":"lava",
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"danger",
-                 "visible":true,
-                 "width":0,
-                 "x":3536,
-                 "y":1536
-                }, 
-                {
-                 "gid":213,
-                 "height":0,
-                 "id":248,
-                 "name":"lava",
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"danger",
-                 "visible":true,
-                 "width":0,
-                 "x":3472,
-                 "y":1568
-                }, 
-                {
-                 "gid":213,
-                 "height":0,
-                 "id":249,
-                 "name":"lava",
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"danger",
-                 "visible":true,
-                 "width":0,
-                 "x":3504,
-                 "y":1568
-                }, 
-                {
-                 "gid":210,
-                 "height":0,
-                 "id":250,
-                 "name":"lava",
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"danger",
-                 "visible":true,
-                 "width":0,
-                 "x":3472,
-                 "y":1536
-                }, 
-                {
-                 "gid":213,
-                 "height":0,
-                 "id":251,
-                 "name":"lava",
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"danger",
-                 "visible":true,
-                 "width":0,
-                 "x":3536,
-                 "y":1568
-                }, 
-                {
-                 "gid":210,
-                 "height":0,
-                 "id":253,
-                 "name":"lava",
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"danger",
-                 "visible":true,
-                 "width":0,
-                 "x":3632,
-                 "y":1536
-                }, 
-                {
-                 "gid":213,
-                 "height":0,
-                 "id":254,
-                 "name":"lava",
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"danger",
-                 "visible":true,
-                 "width":0,
-                 "x":3632,
-                 "y":1568
-                }, 
-                {
-                 "gid":210,
-                 "height":0,
-                 "id":255,
-                 "name":"lava",
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"danger",
-                 "visible":true,
-                 "width":0,
-                 "x":3568,
-                 "y":1536
-                }, 
-                {
-                 "gid":210,
-                 "height":0,
-                 "id":256,
-                 "name":"lava",
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"danger",
-                 "visible":true,
-                 "width":0,
-                 "x":3600,
-                 "y":1536
-                }, 
-                {
-                 "gid":213,
-                 "height":0,
-                 "id":257,
-                 "name":"lava",
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"danger",
-                 "visible":true,
-                 "width":0,
-                 "x":3600,
-                 "y":1568
-                }, 
-                {
-                 "gid":213,
-                 "height":0,
-                 "id":258,
-                 "name":"lava",
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"danger",
-                 "visible":true,
-                 "width":0,
-                 "x":3568,
-                 "y":1568
-                }, 
-                {
-                 "gid":210,
-                 "height":0,
-                 "id":259,
-                 "name":"lava",
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"danger",
-                 "visible":true,
-                 "width":0,
-                 "x":3728,
-                 "y":1536
-                }, 
-                {
-                 "gid":213,
-                 "height":0,
-                 "id":260,
-                 "name":"lava",
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"danger",
-                 "visible":true,
-                 "width":0,
-                 "x":3728,
-                 "y":1568
-                }, 
-                {
-                 "gid":210,
-                 "height":0,
-                 "id":261,
-                 "name":"lava",
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"danger",
-                 "visible":true,
-                 "width":0,
-                 "x":3664,
-                 "y":1536
-                }, 
-                {
-                 "gid":210,
-                 "height":0,
-                 "id":262,
-                 "name":"lava",
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"danger",
-                 "visible":true,
-                 "width":0,
-                 "x":3696,
-                 "y":1536
-                }, 
-                {
-                 "gid":213,
-                 "height":0,
-                 "id":263,
-                 "name":"lava",
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"danger",
-                 "visible":true,
-                 "width":0,
-                 "x":3696,
-                 "y":1568
-                }, 
-                {
-                 "gid":213,
-                 "height":0,
-                 "id":264,
-                 "name":"lava",
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"danger",
-                 "visible":true,
-                 "width":0,
-                 "x":3664,
-                 "y":1568
-                }, 
-                {
-                 "gid":213,
-                 "height":0,
-                 "id":265,
-                 "name":"lava",
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"danger",
-                 "visible":true,
-                 "width":0,
-                 "x":3760,
-                 "y":1568
-                }, 
-                {
-                 "gid":210,
-                 "height":0,
-                 "id":266,
-                 "name":"lava",
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"danger",
-                 "visible":true,
-                 "width":0,
-                 "x":3760,
-                 "y":1536
-                }, 
-                {
-                 "gid":210,
-                 "height":0,
-                 "id":267,
-                 "name":"lava",
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"danger",
-                 "visible":true,
-                 "width":0,
-                 "x":3792,
-                 "y":1536
-                }, 
-                {
-                 "gid":213,
-                 "height":0,
-                 "id":268,
-                 "name":"lava",
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"danger",
-                 "visible":true,
-                 "width":0,
-                 "x":3792,
-                 "y":1568
-                }, 
-                {
-                 "gid":210,
-                 "height":0,
-                 "id":269,
-                 "name":"lava",
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"danger",
-                 "visible":true,
-                 "width":0,
-                 "x":4016,
-                 "y":1536
-                }, 
-                {
-                 "gid":213,
-                 "height":0,
-                 "id":270,
-                 "name":"lava",
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"danger",
-                 "visible":true,
-                 "width":0,
-                 "x":3952,
-                 "y":1568
-                }, 
-                {
-                 "gid":213,
-                 "height":0,
-                 "id":271,
-                 "name":"lava",
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"danger",
-                 "visible":true,
-                 "width":0,
-                 "x":3888,
-                 "y":1568
-                }, 
-                {
-                 "gid":210,
-                 "height":0,
-                 "id":272,
-                 "name":"lava",
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"danger",
-                 "visible":true,
-                 "width":0,
-                 "x":3920,
-                 "y":1536
-                }, 
-                {
-                 "gid":210,
-                 "height":0,
-                 "id":273,
-                 "name":"lava",
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"danger",
-                 "visible":true,
-                 "width":0,
-                 "x":3888,
-                 "y":1536
-                }, 
-                {
-                 "gid":210,
-                 "height":0,
-                 "id":274,
-                 "name":"lava",
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"danger",
-                 "visible":true,
-                 "width":0,
-                 "x":3952,
-                 "y":1536
-                }, 
-                {
-                 "gid":210,
-                 "height":0,
-                 "id":275,
-                 "name":"lava",
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"danger",
-                 "visible":true,
-                 "width":0,
-                 "x":4048,
-                 "y":1536
-                }, 
-                {
-                 "gid":213,
-                 "height":0,
-                 "id":276,
-                 "name":"lava",
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"danger",
-                 "visible":true,
-                 "width":0,
-                 "x":4016,
-                 "y":1568
-                }, 
-                {
-                 "gid":213,
-                 "height":0,
-                 "id":277,
-                 "name":"lava",
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"danger",
-                 "visible":true,
-                 "width":0,
-                 "x":4048,
-                 "y":1568
-                }, 
-                {
-                 "gid":210,
-                 "height":0,
-                 "id":278,
-                 "name":"lava",
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"danger",
-                 "visible":true,
-                 "width":0,
-                 "x":3984,
-                 "y":1536
-                }, 
-                {
-                 "gid":213,
-                 "height":0,
-                 "id":279,
-                 "name":"lava",
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"danger",
-                 "visible":true,
-                 "width":0,
-                 "x":3984,
-                 "y":1568
-                }, 
-                {
-                 "gid":213,
-                 "height":0,
-                 "id":280,
-                 "name":"lava",
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"danger",
-                 "visible":true,
-                 "width":0,
-                 "x":3920,
-                 "y":1568
-                }, 
-                {
-                 "gid":492,
-                 "height":0,
-                 "id":281,
-                 "name":"boss",
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"danger",
-                 "visible":true,
-                 "width":0,
-                 "x":4624,
-                 "y":1456
-                }, 
-                {
-                 "gid":475,
-                 "height":0,
-                 "id":282,
-                 "name":"movecrate",
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"platform",
-                 "visible":true,
-                 "width":0,
-                 "x":880,
-                 "y":960
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1807,7 +2161,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":283,
+ "nextobjectid":353,
  "orientation":"orthogonal",
  "properties":
     {

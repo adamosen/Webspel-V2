@@ -72,7 +72,9 @@ var pickups;
 var food;
 var score = 0;
 var scoreText;
+var shurikenText;
 var justPressed = false;
+var bossAttacked = false;
 
 var pauseKey;
 var worldTimer;
@@ -92,6 +94,7 @@ var canFly = false;
 var backgroundlayer;
 var groundlayer;
 var foregroundlayer;
+var bossSpeed;
 
 var pickups;
 var shurikens;
@@ -103,16 +106,20 @@ var platformDir = -1;
 var seconds;
 var timer;
 var dmgCount;
+var bosses;
+var flag = true;
+var button;
 
 var spikes;
 var lavastop;
 var lavasbot;
 var fireballs;
 var bats;
-var level = 1;
+var level = 3;
 var batAni;
 var enemies;
 //var lifesleft = 3;
+var pauseAndUnauseMusicText;
 
 var lives;
 var booms;
@@ -131,9 +138,7 @@ var hpText;
 var granadeText;
 
 var music;
-var flag = true;
-var button;
-var pauseAndUnauseMusicText;
+
 var crates;
 var playerspeed;
 
@@ -161,26 +166,43 @@ theGame.prototype = {
 
 
 
-
         if (level == 1)
 
         {
+            score = 0;
+            timecounter = 0;
             map = this.game.add.tilemap('map');
+
+            //backgroundlayer
+            backgroundlayer = map.createLayer('background');
+
             this.player = new Player(this.game, 80, 368 - 64);
             this.game.camera.follow(this.player);
+            //this.player.body.collideWorldBounds = true;
         }
 
         if (level == 2) {
             map = this.game.add.tilemap('map2');
+
+            //backgroundlayer
+            //backgroundlayer = map.createLayer('background');
+
             this.player = new Player(this.game, 16, 1568- 64);
             this.game.camera.follow(this.player);
+            //this.player.body.collideWorldBounds = true;
         }
 
         if (level == 3) {
             map = this.game.add.tilemap('map3');
+
+            //backgroundlayer
+            //backgroundlayer = map.createLayer('background');
+
             this.player = new Player(this.game, 16, 656 - 64);
             this.game.camera.follow(this.player);
+            //this.player.body.collideWorldBounds = true;
         }
+        
 
         map.addTilesetImage('tiles2');
         map.addTilesetImage('tiles2dark');
@@ -189,10 +211,9 @@ theGame.prototype = {
         map.addTilesetImage('moveplatform');
         map.addTilesetImage('lava');
         map.addTilesetImage('bat');
+        map.addTilesetImage('boss');
         //map.setCollisionBetween(1, 100);
 
-        ////backgroundlayer
-        backgroundlayer = map.createLayer('background');
 
         ////groundlayer
         groundlayer = map.createLayer('ground');
@@ -218,6 +239,9 @@ theGame.prototype = {
         granadeText = this.game.add.text(16,96, 'Granades: 0', { font: "20px Arial", fill: '#003000'})
         granadeText.fixedToCamera = true;
         
+        //shurikens
+        shurikenText = this.game.add.text(16, 96+ 32, 'Shurikens: 0', { font: "20px Arial", fill: '#009000' })
+        shurikenText.fixedToCamera = true;
 
         //score
         scoreText = this.game.add.text(16, 16, 'Score: 0', { font: "40px Arial", fill: '#fff' });
@@ -230,12 +254,7 @@ theGame.prototype = {
         music = this.game.add.audio("music1");
         music.play('', 0, 1, true);
         music.onLoop.add(this.playLevelMusic, this);
-        //pause music
-        button = this.game.add.button(800-64, 120, "play_pause", this.pauseMusicFunction, this, 0, 1);
-        button.fixedToCamera = true;
-        //pauseandunpausemusictext
-       
-        pauseAndUnauseMusicText = this.game.add.text(800 - 64, 118, 'PauseAndUnpauseMusic', { font: "10px Arial", fill: '#fff' });
+
         this.UpdateHp();
 
 
@@ -316,7 +335,7 @@ theGame.prototype = {
         weaponShurikens = this.game.add.group();
         weaponShurikens.enableBody = true;
         weaponShurikens.physicsBodyType = Phaser.Physics.ARCADE;
-        weaponShurikens.createMultiple(3, 'items1', 4);
+        //weaponShurikens.createMultiple(1, 'items1', 4);
         weaponShurikens.setAll('anchor.x', -0.5);
         weaponShurikens.setAll('anchor.y', 1);
         weaponShurikens.setAll('outOfBoundsKill', true);
@@ -329,7 +348,8 @@ theGame.prototype = {
         booms = this.game.add.group();
         booms.enableBody = true;
 
-        
+        bosses = this.game.add.group();
+        bosses.enableBody = true;
 
         pickups = this.game.add.group();
         pickups.enableBody = true;
@@ -364,11 +384,13 @@ theGame.prototype = {
         lavasbot = this.game.add.group();
         lavasbot.enableBody = true;
 
+        //bosses
+        map.createFromObjects('enemies', 492, 'boss', 0, true, false, bosses);
+
         //shurikens
         map.createFromObjects('objects', 205, 'items1', 4, true, false, shurikens);
         //bats
         map.createFromObjects('enemies', 481, 'bat', 0, true, false, bats);
-        map.createFromObjects('enemies', 446, 'bat', 0, true, false, bats);
         //end
         map.createFromObjects('position', 216, 'items2', 0, true, false, ends);
         //burger
@@ -403,6 +425,17 @@ this);
         bat.body.tilePadding.set(32);
         },
         this);
+        //bosses
+        
+        bosses.forEach(function (boss) {
+            bossAttacked = false;
+            boss.HP = 6;
+            boss.animations.add('move', [0, 1, 2], 4);
+            boss.body.gravity.y = 400;
+            bossSpeed = 50;
+            boss.anchor.setTo(0.5, 0.5);
+        },
+this);
 
 //        weaponGranades.forEach(function (granade)
 //        {
@@ -436,7 +469,13 @@ this);
         if (this.game.time.now > shurikenTimer) {
             //  Grab the first bullet we can from the pool
             weaponShuriken = weaponShurikens.getFirstExists(false);
-            //weaponShuriken.anchor.setTo(0.5, 0.5);
+
+            weaponShurikens.forEach(function (shuriken) {
+
+                shuriken.anchor.setTo(0.5, 0.5);
+
+            },
+            this);
             
             if (weaponShuriken) {
                 //  And fire it
@@ -456,6 +495,7 @@ this);
                 shurikenTimer = this.game.time.now + 200;
             }
         }
+        shurikenText.text = 'Shurikens:' + shurikenCount;
     },
 
     tossGranade: function ()
@@ -463,6 +503,7 @@ this);
         //To avoid them being allowed to fire too fast we set a time limit
         if (this.game.time.now > grandeTimer && granadeCount > 0)
         {
+            
             //  Grab the first bullet we can from the pool
             //weaponGranade = weaponGranades.getFirstExists(false);
             weaponGranade = weaponGranades.create(0, 0, 'items1', 2);
@@ -533,6 +574,8 @@ this);
 
             grandeTimer = this.game.time.now + 3000;
             }
+            granadeCount = granadeCount - 1;
+            granadeText.text = 'Granade:' + granadeCount;
         }
           
 },
@@ -548,6 +591,8 @@ this);
         if (tossgranadeButton.isDown && justPressed == false) {
           
             this.tossGranade();
+            //if(granadeCount > 0)
+            //granadeCount--;
             justPressed = true;
         }
         if (tossshurikenButton.isDown) {
@@ -572,14 +617,14 @@ this);
         if (cursors.left.isDown && deathcounter > 1)
         {
             
-            this.player.scale.x = -1
+            this.player.scale.x = -1;
             this.player.body.velocity.x = -this.player.maxVelocityX;
             this.player.animations.play('walk');
 
         }
         else if (cursors.right.isDown && deathcounter > 1)
         {
-            this.player.scale.x = 1
+            this.player.scale.x = 1;
 
             this.player.body.velocity.x = this.player.maxVelocityX;
             this.player.animations.play('walk');
@@ -594,6 +639,39 @@ this);
         if (cursors.up.isDown && this.player.body.onFloor() && deathcounter > 1 || cursors.up.isDown && this.player.body.touching.down && deathcounter > 1) {
             this.player.body.velocity.y = -this.player.maxVelocityY;
         }
+    },
+
+    BossAttack: function () {
+        bosses.forEach(function (boss) {
+            if (bossAttacked == true)
+            {
+                if (boss.body.onFloor())
+                {
+                    if (this.player.x < boss.x) {
+                        bossSpeed = -150;
+                        boss.scale.x = 1;
+                    }
+                    else if (this.player.x > boss.x) {
+                        bossSpeed = 150;
+                        boss.scale.x = -1;
+                    }
+                }
+                boss.animations.play('move');
+                boss.body.velocity.x = bossSpeed;
+            }
+
+               
+            boss.body.bounce.set(1);
+            if (Phaser.Math.distance(this.player.x, this.player.y, boss.x, boss.y) <= 400 && boss.body.velocity.x == 0)
+            {
+                bossAttacked = true;
+                boss.body.velocity.y = -300;
+                
+
+            }
+
+        },
+this);
     },
 
     BatFlying: function()
@@ -627,6 +705,7 @@ this);
 
         this.game.physics.arcade.collide(this.player, groundlayer);
         this.game.physics.arcade.collide(this.player, lavasbot, takeDmgFatal, null, this);
+        this.game.physics.arcade.collide(this.player, bosses, takeDmgFatal, null, this);
         this.game.physics.arcade.collide(this.enemy, groundlayer);
         this.game.physics.arcade.collide(weaponGranades, groundlayer);
         this.game.physics.arcade.overlap(bats,groundlayer);
@@ -634,9 +713,13 @@ this);
 
 
         this.game.physics.arcade.collide(this.player, platforms);
+        this.game.physics.arcade.collide(bosses, groundlayer);
+        this.game.physics.arcade.collide(this.player, bosses);
         this.game.physics.arcade.collide(this.player, crates);
         this.game.physics.arcade.collide(crates, groundlayer);
         this.game.physics.arcade.collide(fireballs, lavasbot);
+        this.game.physics.arcade.overlap(weaponShurikens, bosses, dealDmg, null, this);
+        this.game.physics.arcade.overlap(weaponShurikens, bats, killEnemy, null, this);
         this.game.physics.arcade.overlap(this.player, pickups, collectfood, null, this);
         this.game.physics.arcade.overlap(this.player, shurikens, collectShuriken, null, this);
         this.game.physics.arcade.overlap(this.player, flyingpotions, collectFlyingPotion, null, this);
@@ -647,7 +730,7 @@ this);
         this.game.physics.arcade.collide(this.player, fireballs, takeDmgX, null, this);
 
         this.BatFlying();
-
+        this.BossAttack();
         
         function endLevel(player, endpos)
         {
@@ -656,21 +739,36 @@ this);
             if (level == 3)
             {
                 level = 1;
+
                 this.game.state.start("Win", true, false, score);
                 //score = 0;
-                //timecounter = 0;
+                timecounter = 0;
             }
             else
             {
 
-            level++;
-            this.game.state.start("GameOver", true, false, score);
+                level++;
+                this.player.body.collideWorldBounds = false;
+            this.game.state.start("TheGame");
             }
 
         }
 
+        function dealDmg(weapon, enemy) {
+            enemy.HP--;
+            weapon.kill();
+
+            if(enemy.HP == 0)
+            enemy.kill();
 
 
+        }
+
+        function killEnemy(weapon, enemy) {
+            enemy.kill();
+
+
+        }
 
 
 
@@ -738,18 +836,21 @@ this);
             //lägger till score
             score += 10;
             granadeCount = granadeCount + 1;
+            granadeText.text = 'Granade:' + granadeCount;
             scoreText.text = 'Score:' + score;
         }
 
         function collectShuriken(player, item) {
             //ta bort
             item.kill();
-            weaponShurikens.createMultiple(3, 'items1', 4);
-            
+            weaponShurikens.createMultiple(1, 'items1', 4);
+            shurikenCount = weaponShurikens.countLiving();
+
             //lägger till score
             score += 10;
             //shurikenCount = shurikenCount + 1;
             scoreText.text = 'Score:' + score;
+            shurikenText.text = 'Shurikens:' + granadeCount;
         }
 
         function collectfood(player, food) {
@@ -785,6 +886,19 @@ this);
         //    }
         //},
         //this);
+
+//        bosses.forEach(function (boss) {
+//            boss.animations.play('move');        
+//            boss.body.bounce.set(1);
+//            boss.body.velocity.x = bossSpeed;
+//            //if(boss.body.touching.left || boss.body.touching.right)
+//            //{
+//            //    bossSpeed = -bossSpeed;
+//            //}
+                
+            
+//        },
+//this);
 
         lavasbot.forEach(function (lava) {
             lava.animations.play('moving');
@@ -871,22 +985,9 @@ this);
 
     },
 
-    pauseMusicFunction: function () {
-
-        if (flag) {
-            music.pause();
-        }
-        else {
-            music.resume();
-        }
-
-        flag = !flag;
-
-    },
-
-    render: function () {
-        //this.game.debug.body(this.player, 'rgba(0, 255, 0, 0.9)');
-    },
+    //render: function () {
+    //    this.game.debug.body(this.player, 'rgba(0, 255, 0, 0.9)');
+    //},
 
     BackgroundFilter: function()
 {
@@ -959,7 +1060,7 @@ this);
         "pos.x *= a;",
 
         "// perlin_noise",
-        "vec2 pos_ = pos + time * 0.1;",
+        "vec2 pos_ = pos + time * 0.6;",
         "float seed = 0.0;",
         "float freq_start = 1.5;",
         "float amp_start = 1.0;",
