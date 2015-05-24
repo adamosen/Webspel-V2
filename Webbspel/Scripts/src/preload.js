@@ -47,9 +47,9 @@ preload.prototype = {
         this.game.load.spritesheet('boss', '/Content/gameassets/boss.png', 96, 96);
 
 	    //ALL MUSIK//
-        this.game.load.audio("music1", "/Content/gameassets/music/level1.wav");
-        this.game.load.audio("music2", "/Content/gameassets/music/level2.wav");
-        this.game.load.audio("music3", "/Content/gameassets/music/level3.wav");
+        this.game.load.audio("music1", "/Content/gameassets/music/level2music.wav");
+        this.game.load.audio("music2", "/Content/gameassets/music/level1music.wav");
+        this.game.load.audio("music3", "/Content/gameassets/music/level3music.wav");
 	},
 	create: function ()
 	{

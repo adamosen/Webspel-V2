@@ -1,6 +1,6 @@
 //VERSION 0.9//
  //senast ändrad 2015-05-23 av Adam//
-//Checka Script/phaser.min.js eller kolla på hemsidan för parametrar//
+//Checka Script/phaser.min.js eller kolla på https://phaser.io/docs //
 
 var theGame = function (game) { };
 
@@ -43,13 +43,18 @@ var cursors;
 var tossgranadeButton;
 var tossshurikenButton;
 
+//screenbuttons
+var pauseKey;
+
 //SCORE
 var score = 0;
-
 var scoreText;
+//TEXT//
+var hpText;
+var granadeText;
 var shurikenText;
 
-var pauseKey;
+
 
 var timecounter = 0;
 var deathcounter = 2;
@@ -65,7 +70,7 @@ var map;
 var backgroundlayer;
 var groundlayer;
 var foregroundlayer;
-var level = 3;
+var level = 1;
 
 //några bools
 var canFly = false;
@@ -109,11 +114,12 @@ var hp;
 
 
 //filterdata
-var filter;
+var filter1;
+var filter2;
+var filter3;
 var sprite;
 
-var hpText;
-var granadeText;
+
 
 ///MUSIK///
 var music;
@@ -136,7 +142,7 @@ theGame.prototype = {
         
         //physics+bgcolor //ADAM
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
-        this.game.stage.backgroundColor = '#009999';
+        this.game.stage.backgroundColor = '#000000';
 
 
 
@@ -149,6 +155,7 @@ theGame.prototype = {
 
         {
             //score/tid ska vara 0 när man börjar om//
+            music = this.game.add.audio("music1");
             score = 0;
             timecounter = 0;
             map = this.game.add.tilemap('map');
@@ -158,20 +165,38 @@ theGame.prototype = {
 
             this.player = new Player(this.game, 80, 368 - 64);
             this.game.camera.follow(this.player);
+
+
+            sprite.filters = [filter1];
+
         }
 
         if (level == 2) {
+            music = this.game.add.audio("music2");
             map = this.game.add.tilemap('map2');
             this.player = new Player(this.game, 16, 1568- 64);
             this.game.camera.follow(this.player);
+
+
+            sprite.filters = [filter2];
+
         }
 
         if (level == 3) {
+            music = this.game.add.audio("music3");
             map = this.game.add.tilemap('map3');
             this.player = new Player(this.game, 16, 656 - 64);
             this.game.camera.follow(this.player);
 
+
+            sprite.filters = [filter3];
+
+
         }
+
+        //Music
+        music.play('', 0, 1, true);
+        music.onLoop.add(this.playLevelMusic, this);
         
         //DATA SOM BEHÖVS TILL MAPS//
         map.addTilesetImage('tiles2');
@@ -200,24 +225,20 @@ theGame.prototype = {
         this.PlatformTimer();
 
         //granades TEXT
-        granadeText = this.game.add.text(16,96, 'Granades: 0', { font: "20px Arial", fill: '#003000'})
+        granadeText = this.game.add.text(16,96, '', { font: "20px Arial", fill: '#003000'})
         granadeText.fixedToCamera = true;
+        granadeText.text = 'Granades:' + granadeCount;
         
         //shurikens TEXT
-        shurikenText = this.game.add.text(16, 96+ 32, 'Shurikens: 0', { font: "20px Arial", fill: '#009000' })
+        shurikenText = this.game.add.text(16, 96+ 32, '', { font: "20px Arial", fill: '#009000' })
         shurikenText.fixedToCamera = true;
+        shurikenText.text = 'Shurikens:' + shurikenCount;
 
         //score TEXT
-        scoreText = this.game.add.text(16, 16, 'Score: 0', { font: "40px Arial", fill: '#fff' });
+        scoreText = this.game.add.text(16, 16, '', { font: "40px Arial", fill: '#fff' });
         scoreText.fixedToCamera = true;
+        scoreText.text = 'Score:' + score;
 
-        hpText = this.game.add.text(16, 48, 'hp: 0', { font: "30px Arial", fill: '#fff' });
-        hpText.fixedToCamera = true;
-
-        //Music
-        music = this.game.add.audio("music1");
-        music.play('', 0, 1, true);
-        music.onLoop.add(this.playLevelMusic, this);
 
         this.UpdateHp();
 
@@ -276,13 +297,14 @@ theGame.prototype = {
 
     PlatformTimer: function()
     {
-        
+        //DETTA ÄR EN DÅLIG LÖSNING HAR JAG KOMMIT FRAM TILL, SKA ÄNDRAS!// adam 2015-04-17
         platformTimer = this.game.time.create(false);
 
         //  saker händer efter 2 sekunder sen körs funktion
         platformTimer.loop(2000, ChangePlatformDir, this);
 
         platformTimer.start();
+
 
 
         function ChangePlatformDir()
@@ -393,7 +415,7 @@ this);
 
         map.createFromObjects('danger', 210, 'lava', 3, true, false, lavastop);
         map.createFromObjects('danger', 213, 'lava', 6, true, false, lavasbot);
-        map.createFromObjects('danger', 227, 'lava', 3, true, false, lavastop);
+        map.createFromObjects('danger', 427, 'lava', 3, true, false, lavastop);
         map.createFromObjects('danger', 436, 'lava', 6, true, false, lavasbot);
 
         //bats gör....
@@ -408,7 +430,7 @@ this);
         //Alla bossar har...
         bosses.forEach(function (boss) {
             bossAttacked = false;
-            boss.HP = 6;
+            boss.HP = 7;
             boss.animations.add('move', [0, 1, 2], 4);
             boss.body.gravity.y = 400;
             bossSpeed = 50;
@@ -436,12 +458,14 @@ this);
     tossShuriken: function () {
         
         //  så att man inte kan kasta för fort finns den en tidsbegränsning...
-        if (this.game.time.now > shurikenTimer) {
+        if (this.game.time.now > shurikenTimer && shurikenCount > 0)
+        {
             //  tar den första som finns i gruppen...
             weaponShuriken = weaponShurikens.getFirstExists(false);
 
-            weaponShurikens.forEach(function (shuriken) {
-
+            weaponShurikens.forEach(function (shuriken)
+            {
+                shuriken.body.collideWorldBounds = true;
                 shuriken.anchor.setTo(0.5, 0.5);
 
             },
@@ -464,6 +488,7 @@ this);
 
                 shurikenTimer = this.game.time.now + 200;
             }
+            shurikenCount--;
         }
         shurikenText.text = 'Shurikens:' + shurikenCount;
     },
@@ -670,11 +695,19 @@ this);
 
     update: function ()
     {
-        filter.update();
+        if (level == 1)
+            filter1.update();
+        else if (level == 2)
+            filter2.update();
+        else if (level == 3)
+            filter3.update();
+
+
         
-        hpText.text = this.player.health;
+        //hpText.text = this.player.health;
         //KOLLISION KÖRS FÖR 2 OBJEKT, SEDAN KÖRS EN FUNKTION OM SÅ VILL//
         this.game.physics.arcade.collide(this.player, platforms);
+        this.game.physics.arcade.collide(weaponShurikens,groundlayer,killThis,null,this);
         this.game.physics.arcade.collide(bosses, groundlayer);
         this.game.physics.arcade.collide(this.player, bosses);
         this.game.physics.arcade.collide(this.player, crates);
@@ -701,6 +734,11 @@ this);
         this.BatFlying();
         this.BossAttack();
         
+        function killThis(weapon, object)
+        {
+            weapon.kill();
+        }
+
         function endLevel(player, endpos)
         {
             
@@ -730,6 +768,8 @@ this);
             if (enemy.HP == 0)
             {
                 enemy.kill();
+                score = score + 150;
+                scoreText.text = 'Score:' + score;
             }
 
 
@@ -739,6 +779,9 @@ this);
         function killEnemy(weapon, enemy)
         {
             enemy.kill();
+            score = score + 15;
+            scoreText.text = 'Score:' + score;
+            
 
         }
 
@@ -799,13 +842,13 @@ this);
             //ta bort
             pickup.kill();
 
-            // ADAM 2015-05-23
+            // ADAM 2015-04-19
             granadeCount = granadeCount + 1;
             granadeText.text = 'Granade:' + granadeCount;
         }
 
         function collectShuriken(player, item) {
-            // ADAM 2015-05-23
+            // ADAM 2015-04-19
             //tar bort item
             item.kill();
             shurikenCount = shurikenCount + 1;
@@ -816,12 +859,14 @@ this);
             //ta bort
             food.kill();
 
+            //ADAM 2015 - 04 - 19
             //lägger till score
             score += 10;
             scoreText.text = 'Score:' + score;
         }
         function collectFlyingPotion(player,item)
         {
+           // ADAM 2015 - 04 - 22
             item.kill();
             player.body.gravity.y = 100;
             canFly = true;
@@ -829,8 +874,10 @@ this);
 
         }
 
-        if (canFly == true && this.game.time.now > currentFlyTime + 10000)
+        
+        if (canFly == true && this.game.time.now > currentFlyTime + 6000)
         {
+            ///du kommer kunna flyga 6 sekunder sen sätter denna metoden dig normal igen/// Adam 2015-04-22
             canFly = false;
             this.player.body.gravity.y = 400;
 
@@ -866,6 +913,14 @@ this);
             }
 
 
+        },
+        this);
+
+        //WB shurikenFIX// adam 2015-05-12
+        weaponShurikens.forEach(function (shuriken) {
+
+            if (shuriken.body.velocity.x == 0)
+                shuriken.kill();
         },
         this);
 
@@ -910,10 +965,10 @@ this);
 
     BackgroundFilter: function()
 {
-        ///DETTA ÄR ETT BAKGRUNDSFILTER/// ändrad av adam 2015-05-20
+        ///DETTA ÄR BAKGRUNDSFILTER/// ändrad av adam 2015-05-20
         // Från http://glslsandbox.com/
 
-    var fragmentSrc = [
+    var fragmentSrc1 = [
 "#ifdef GL_ES",
 "precision mediump float;",
 "#endif",
@@ -979,7 +1034,7 @@ this);
         "pos.x *= a;",
 
         "// perlin_noise",
-        "vec2 pos_ = pos + time * 0.6;",
+        "vec2 pos_ = pos + time * 0.09;",
         "float seed = 0.0;",
         "float freq_start = 1.5;",
         "float amp_start = 1.0;",
@@ -988,23 +1043,195 @@ this);
 
    " #if 1",
         "// smoke",
-        "gl_FragColor = vec4(pn * 0.8, pn * 1.0, pn * 0.9, 1.0);",
+        "gl_FragColor = vec4(pn * 1.0, pn * 1.0, pn * 0.8, 1.0);",
     "#else",
         "// dizzy!!!",
-        "pn = fract(pn * 20.0 + sin(time));",
-        "gl_FragColor = vec4(pn * 3.0, pn * 1.0, pn * 0.2, 1.0);",
+        "pn = fract(pn * 8.0 + sin(time));",
+        "gl_FragColor = vec4(pn * 2.0, pn * 1.0, pn * 0.2, 1.0);",
     "#endif",
     "}",
     ];
 
-    filter = new Phaser.Filter(this.game, null, fragmentSrc);
-    filter.setResolution(800, 600);
+    var fragmentSrc2 = [
+"#ifdef GL_ES",
+"precision mediump float;",
+"#endif",
+
+    "uniform float time;",
+    "uniform vec2 mouse;",
+    "uniform vec2 resolution;",
+
+
+    "float cosine_interpolate(float _y1, float _y2, float _r)",
+    "{",
+        "float r2;",
+        "r2 = (1.0 - cos(_r * 3.1415926)) / 2.0;",
+        "return (_y1 * (1.0 - r2) + _y2 * r2);",
+    "}",
+
+    "float rand(vec2 _v, float _seed)",
+    "{",
+   "     // 0.0 .. 1.0",
+        "return fract(sin(dot(_v, vec2(12.9898, 78.233))) * (43758.5453 + _seed));",
+   " }",
+
+   " float noise(vec2 _v, float _seed, vec2 _freq)",
+    "{",
+        "float fl1 = rand(floor(_v * _freq), _seed);",
+        "float fl2 = rand(floor(_v * _freq) + vec2(1.0, 0.0), _seed);",
+        "float fl3 = rand(floor(_v * _freq) + vec2(0.0, 1.0), _seed);",
+        "float fl4 = rand(floor(_v * _freq) + vec2(1.0, 1.0), _seed);",
+        "vec2 fr = fract(_v * _freq);",
+
+   " #if 0",
+        "// linear interpolate",
+        "float r1 = mix(fl1, fl2, fr.x);",
+        "float r2 = mix(fl3, fl4, fr.x);",
+        "return mix(r1, r2, fr.y);",
+    "#else",
+        "// cosine interpolate",
+        "float r1 = cosine_interpolate(fl1, fl2, fr.x);",
+        "float r2 = cosine_interpolate(fl3, fl4, fr.x);",
+        "return cosine_interpolate(r1, r2, fr.y);",
+    "#endif",
+    "}",
+
+    "float perlin_noise(vec2 _pos, float _seed, float _freq_start, float _amp_start, float _amp_ratio)",
+    "{",
+        "float freq = _freq_start;",
+        "float amp = _amp_start;",
+        "float pn = noise(_pos, _seed, vec2(freq, freq)) * amp;",
+        "for(int i=0; i<4; i++)",
+        "{",
+            "freq *= 1.6;",
+            "amp *= _amp_ratio;",
+            "pn += (noise(_pos, _seed, vec2(freq, freq)) * 2.0 - 1.0) * amp;",
+        "}",
+        "return pn;",
+    "}",
+
+    "void main( void )",
+    "{",
+        "// position",
+        "vec2 pos = (gl_FragCoord.xy / resolution - 0.8) * 2.0;",
+        "float a = resolution.x / resolution.y;",
+        "pos.x *= a;",
+
+        "// perlin_noise",
+        "vec2 pos_ = pos + -time * 0.09;",
+        "float seed = 0.0;",
+        "float freq_start = 1.5;",
+        "float amp_start = 1.0;",
+        "float amp_ratio = 0.35;",
+        "float pn = perlin_noise(pos_, seed, freq_start, amp_start, amp_ratio);",
+
+   " #if 1",
+        "// smoke",
+        "gl_FragColor = vec4(pn * 1.3, pn * 1.0, pn * 1.0, 1.0);",
+    "#else",
+        "// dizzy!!!",
+        "pn = fract(pn * 8.0 + sin(-time));",
+        "gl_FragColor = vec4(pn * 2.0, pn * 1.0, pn * 0.2, 1.0);",
+    "#endif",
+    "}",
+    ];
+
+    var fragmentSrc3 = [
+"#ifdef GL_ES",
+"precision mediump float;",
+"#endif",
+
+"uniform float time;",
+"uniform vec2 mouse;",
+"uniform vec2 resolution;",
+
+
+"float cosine_interpolate(float _y1, float _y2, float _r)",
+"{",
+"float r2;",
+"r2 = (1.0 - cos(_r * 3.1415926)) / 2.0;",
+"return (_y1 * (1.0 - r2) + _y2 * r2);",
+"}",
+
+"float rand(vec2 _v, float _seed)",
+"{",
+"     // 0.0 .. 1.0",
+"return fract(sin(dot(_v, vec2(12.9898, 78.233))) * (43758.5453 + _seed));",
+" }",
+
+" float noise(vec2 _v, float _seed, vec2 _freq)",
+"{",
+"float fl1 = rand(floor(_v * _freq), _seed);",
+"float fl2 = rand(floor(_v * _freq) + vec2(1.0, 0.0), _seed);",
+"float fl3 = rand(floor(_v * _freq) + vec2(0.0, 1.0), _seed);",
+"float fl4 = rand(floor(_v * _freq) + vec2(1.0, 1.0), _seed);",
+"vec2 fr = fract(_v * _freq);",
+
+" #if 0",
+"// linear interpolate",
+"float r1 = mix(fl1, fl2, fr.x);",
+"float r2 = mix(fl3, fl4, fr.x);",
+"return mix(r1, r2, fr.y);",
+"#else",
+"// cosine interpolate",
+"float r1 = cosine_interpolate(fl1, fl2, fr.x);",
+"float r2 = cosine_interpolate(fl3, fl4, fr.x);",
+"return cosine_interpolate(r1, r2, fr.y);",
+"#endif",
+"}",
+
+"float perlin_noise(vec2 _pos, float _seed, float _freq_start, float _amp_start, float _amp_ratio)",
+"{",
+"float freq = _freq_start;",
+"float amp = _amp_start;",
+"float pn = noise(_pos, _seed, vec2(freq, freq)) * amp;",
+"for(int i=0; i<4; i++)",
+"{",
+    "freq *= 2.0;",
+    "amp *= _amp_ratio;",
+    "pn += (noise(_pos, _seed, vec2(freq, freq)) * 2.0 - 1.0) * amp;",
+"}",
+"return pn;",
+"}",
+
+"void main( void )",
+"{",
+"// position",
+"vec2 pos = (gl_FragCoord.xy / resolution - 0.5) * 2.0;",
+"float a = resolution.x / resolution.y;",
+"pos.x *= a;",
+
+"// perlin_noise",
+"vec2 pos_ = pos + time * 0.6;",
+"float seed = 0.0;",
+"float freq_start = 1.5;",
+"float amp_start = 1.0;",
+"float amp_ratio = 0.35;",
+"float pn = perlin_noise(pos_, seed, freq_start, amp_start, amp_ratio);",
+
+" #if 1",
+"// smoke",
+"gl_FragColor = vec4(pn * 0.8, pn * 1.0, pn * 0.9, 1.0);",
+"#else",
+"// dizzy!!!",
+"pn = fract(pn * 10.0 + sin(time));",
+"gl_FragColor = vec4(pn * 3.0, pn * 1.0, pn * 0.2, 1.0);",
+"#endif",
+"}",
+    ];
+
+    filter1 = new Phaser.Filter(this.game, null, fragmentSrc1);
+    filter1.setResolution(800, 600);
+
+    filter2 = new Phaser.Filter(this.game, null, fragmentSrc2);
+    filter2.setResolution(800, 600);
+
+    filter3 = new Phaser.Filter(this.game, null, fragmentSrc3);
+    filter3.setResolution(800, 600);
 
     sprite = this.game.add.sprite();
     sprite.width = 800;
     sprite.height = 600;
-
-    sprite.filters = [filter];
 
 }
 
