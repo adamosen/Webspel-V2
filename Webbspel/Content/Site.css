@@ -91,7 +91,7 @@ body{
 {
     margin: auto;
     width: 100%;
-    height: 100vh;
+    height: 300px;
     color: white;
 }
 h1{
@@ -111,11 +111,14 @@ nav{
     margin-bottom: 75px;
 }
 #phaser-game{
-    margin-left: 75px;
+    margin-left: 75px !important;
+    width: 800px !important;
+    height: 600px !important;
+    margin-top: -750px !important;
 }
 canvas{
-    width: 800px !important; 
-    height: 600px !important;
+    /*width: 800px !important; 
+    height: 600px !important;*/
     margin-left: 75px !important;
-    margin-top: -800px !important;
+    margin-top: 0px !important;
 }
