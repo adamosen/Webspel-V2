@@ -1,4 +1,4 @@
-//PRELOAD STATE SENAST ÄNDRAS AV ADAM 2015-05-23//
+//PRELOAD STATE SENAST ÄNDRAS AV ADAM 2015-05-23// v 0.9
 
 var preload = function (game) { }
 
@@ -13,8 +13,6 @@ preload.prototype = {
         //LADDAR IN MENY KNAPPAR//
 		this.game.load.image("gametitle", "/Content/assets/gametitle.png");
 		this.game.load.image("play", "/Content/assets/play.png");
-		this.game.load.image("higher", "/Content/assets/higher.png");
-		this.game.load.image("lower", "/Content/assets/lower.png");
 		this.game.load.image("gameover", "/Content/assets/gameover.png");
 		this.game.load.image("wingame", "/Content/assets/wingame.png");
 		this.game.load.spritesheet('PLAYPAUSE', '/Content//gameassets//play_pause.png',37.2,34);

@@ -1,4 +1,5 @@
-var boot = function(game){
+//Bootfil, av ADAM 0.1
+var boot = function (game) {
 	console.log("%cStarting game", "color:white; background:red");
 };
   

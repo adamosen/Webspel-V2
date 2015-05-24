@@ -1,4 +1,5 @@
-var gameTitle = function(game){}
+//speltitelen av Adam v0.1
+var gameTitle = function (game) { }
 
 gameTitle.prototype = {
 

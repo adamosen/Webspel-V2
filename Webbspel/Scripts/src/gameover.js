@@ -1,14 +1,13 @@
-var gameOver = function(game){}
+//gameover av ADAM 0.2
+var gameOver = function (game) { }
 var gameScore;
 gameOver.prototype = {
     init: function (score) {
         alert("You scored: " + score)
+        //skriver score till en variabel.
         gameScore = score;
     },
 
-    //init: function (timecounter) {
-    //    alert("Your time: " + timecounter)
-    //},
   	create: function(){
   		var gameOverTitle = this.game.add.sprite(400,160,"gameover");
 		gameOverTitle.anchor.setTo(0.5,0.5);

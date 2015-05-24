@@ -55,14 +55,14 @@ var granadeText;
 var shurikenText;
 
 
-
+//counters
 var timecounter = 0;
 var deathcounter = 2;
 var granadeCount = 0;
 var shurikenCount = 0;
 var flyingPotionCount = 0;
 
-
+//animation
 var batAni;
 
 //MAP DATA
@@ -111,7 +111,7 @@ var bats;
 var enemies;
 var ends;
 var hp;
-
+var crates;
 
 //filterdata
 var filter1;
@@ -124,9 +124,7 @@ var sprite;
 ///MUSIK///
 var music;
 
-var crates;
-var playerspeed;
-
+//vapentimers
 var grandeTimer = 0;
 var shurikenTimer = 0;
 
@@ -155,18 +153,20 @@ theGame.prototype = {
 
         {
             //score/tid ska vara 0 när man börjar om//
-            music = this.game.add.audio("music1");
+
             score = 0;
             timecounter = 0;
             map = this.game.add.tilemap('map');
+            music = this.game.add.audio("music1");
 
             //sätter bakgrundlagert
             backgroundlayer = map.createLayer('background');
 
+            //fixad spelarposition, vet ej hur ska fixa till tilemapen. 
             this.player = new Player(this.game, 80, 368 - 64);
             this.game.camera.follow(this.player);
 
-
+            //sätter bakgrundfilter
             sprite.filters = [filter1];
 
         }
@@ -174,10 +174,11 @@ theGame.prototype = {
         if (level == 2) {
             music = this.game.add.audio("music2");
             map = this.game.add.tilemap('map2');
+            //fixad spelarposition, vet ej hur ska fixa till tilemapen. 
             this.player = new Player(this.game, 16, 1568- 64);
             this.game.camera.follow(this.player);
 
-
+            //sätter bakgrundfilter
             sprite.filters = [filter2];
 
         }
@@ -185,10 +186,11 @@ theGame.prototype = {
         if (level == 3) {
             music = this.game.add.audio("music3");
             map = this.game.add.tilemap('map3');
+            //fixad spelarposition, vet ej hur ska fixa till tilemapen. 
             this.player = new Player(this.game, 16, 656 - 64);
             this.game.camera.follow(this.player);
 
-
+            //sätter bakgrundfilter
             sprite.filters = [filter3];
 
 
@@ -214,9 +216,6 @@ theGame.prototype = {
         groundlayer.resizeWorld();
         groundlayer.enableBody = true;
 
-        lives = this.game.add.group();
-
-        
         this.CreateObjects();
     
         //Sätter främre lagert
@@ -242,18 +241,27 @@ theGame.prototype = {
 
         this.UpdateHp();
 
-        //Pausar musiken//
-        PauseButton = this.game.add.button(800 - 48, 600 - 32, "PLAYPAUSE", this.pauseMusicFunction, this, 2, 3);
-        PauseButton.fixedToCamera = true;
-
         ////pausar spelet och timern
-        pauseKey = this.game.add.sprite(800 - 48, 600 - 64, 'PLAYPAUSE', 1);
+        pauseKey = this.game.add.sprite(800 - 48, 600 - 80, 'PLAYPAUSE', 1);
         pauseKey.fixedToCamera = true;
         pauseKey.inputEnabled = true;
         pauseKey.events.onInputUp.add(function () {
             this.game.paused = true;
         }, this);
-        this.game.input.onDown.add(function () { if (this.game.paused) this.game.paused = false; }, this);
+        this.game.input.onDown.add(function () {
+            if (this.game.paused)
+            {
+                pauseKey.loadTexture('PLAYPAUSE', 1);
+                this.game.paused = false;
+            }
+            else if (this.game.paused == false)
+                pauseKey.loadTexture('PLAYPAUSE', 0);
+
+        }, this);
+
+        //Pausar musiken//
+        PauseButton = this.game.add.button(800 - 48, 600 - 32, "PLAYPAUSE", this.pauseMusicFunction, this, 2, 3);
+        PauseButton.fixedToCamera = true;
 
         ////SÄTTER DE OLIKA TIMERS////ADAM
         worldTimer = this.game.add.text(800-64, 32, '0');
@@ -265,18 +273,25 @@ theGame.prototype = {
 
     pauseMusicFunction: function () {
 
-        if (flag) {
-            music.pause();
-        }
-        else {
-            music.resume();
-        }
+        if (this.game.paused == false)
+        {
+            if (flag)
+            {
+                music.pause();
+            }
+            else
+            {
+                music.resume();
+            }
 
         flag = !flag;
+        }
+
 
     },
 
     updateTimer: function () {
+        //oilka timers
         deathcounter++;
         timecounter++;
         worldTimer.setText(timecounter);
@@ -317,6 +332,9 @@ theGame.prototype = {
 
     CreateObjects: function()
     {
+        //gör till en grupp som kan ha spelarens liv som egna objekt.
+        lives = this.game.add.group();
+
         //granades
         // granatgruppen //OBS DESSA ÄR FÖR DE VAPEN SOM MAN KASTAR!// ADAM
         weaponGranades = this.game.add.group();
@@ -336,7 +354,7 @@ theGame.prototype = {
         weaponShurikens.setAll('outOfBoundsKill', true);
         weaponShurikens.setAll('checkWorldBounds', true);
 
-
+        //dessa nedan tilldelar grupper till dessa variabler och en kropp så de kan interagera med varandra.
         bats = this.game.add.group();
         bats.enableBody = true;
 
@@ -379,6 +397,8 @@ theGame.prototype = {
         lavasbot = this.game.add.group();
         lavasbot.enableBody = true;
 
+
+        //Dessa nedan bestämmer var och hur objekt ska skapas från JSON filer.
         //bosses
         map.createFromObjects('enemies', 492, 'boss', 0, true, false, bosses);
 
@@ -428,34 +448,40 @@ this);
         this);
 
         //Alla bossar har...
-        bosses.forEach(function (boss) {
+        bosses.forEach(function (boss)
+        {
             bossAttacked = false;
             boss.HP = 7;
+            boss.score = 150;
             boss.animations.add('move', [0, 1, 2], 4);
             boss.body.gravity.y = 400;
             bossSpeed = 50;
             boss.anchor.setTo(0.5, 0.5);
         },
-this);
+        this);
 
-        lavastop.forEach(function (lava) {
+        //lava tiles gör detta....
+        lavastop.forEach(function (lava)
+        {
             lava.animations.add('moving', [3, 4, 5], 2, true);
             lava.body.tilePadding.set(32);
             lava.body.immovable = true;
         },
-this);
+        this);
 
-        lavasbot.forEach(function (lava) {
+        lavasbot.forEach(function (lava)
+        {
             lava.animations.add('moving', [6, 7, 8], 2, true);
             lava.body.tilePadding.set(32);
             lava.body.immovable = true;
         },
-this);
+        this);
 
     },
 
 
-    tossShuriken: function () {
+    tossShuriken: function ()
+    {
         
         //  så att man inte kan kasta för fort finns den en tidsbegränsning...
         if (this.game.time.now > shurikenTimer && shurikenCount > 0)
@@ -471,7 +497,8 @@ this);
             },
             this);
             
-            if (weaponShuriken) {
+            if (weaponShuriken)
+            {
                 //  Kastar den!
                 weaponShuriken.reset(this.player.x, this.player.y + 1);
                 if (this.player.scale.x == -1)
@@ -512,7 +539,7 @@ this);
                     
                     justPressed = false;
                     bats.forEach(function (bat) {
-                        ///dom dödar bats/
+                        ///dom dödar bats///
                         if (Phaser.Math.distance(weaponGranade.x, weaponGranade.y, bat.x, bat.y) <= 150)
                         {
                             bat.kill();
@@ -522,9 +549,11 @@ this);
                     },
 this);
 
-                    bosses.forEach(function (b) {
-                        ///dom dödar bossar/
-                        if (Phaser.Math.distance(weaponGranade.x, weaponGranade.y, b.x, b.y) <= 150) {
+                    bosses.forEach(function (b)
+                    {
+                        ///dom dödar bossar///
+                        if (Phaser.Math.distance(weaponGranade.x, weaponGranade.y, b.x, b.y) <= 150)
+                        {
                             b.kill();
 
                         }
@@ -590,24 +619,28 @@ this);
         if(deathcounter > 1)
             this.player.body.velocity.x = 0;
 
-        if (tossgranadeButton.isDown && justPressed == false) {
+        if (tossgranadeButton.isDown && justPressed == false)
+        {
           
             this.tossGranade();
             justPressed = true;
         }
-        if (tossshurikenButton.isDown) {
+        if (tossshurikenButton.isDown)
+        {
 
             this.tossShuriken();
         }
            
 
-        if (cursors.up.isDown && canFly == true) {
+        if (cursors.up.isDown && canFly == true)
+        {
 
             this.player.body.velocity.y = -this.player.maxVelocityX;
 
         }
 
-        if (cursors.down.isDown && canFly == true) {
+        if (cursors.down.isDown && canFly == true)
+        {
 
             this.player.body.velocity.y = this.player.maxVelocityX;
 
@@ -633,22 +666,27 @@ this);
             this.player.frame = 0;
         }
 
-        if (cursors.up.isDown && this.player.body.onFloor() && deathcounter > 1 || cursors.up.isDown && this.player.body.touching.down && deathcounter > 1) {
+        if (cursors.up.isDown && this.player.body.onFloor() && deathcounter > 1 || cursors.up.isDown && this.player.body.touching.down && deathcounter > 1)
+        {
             this.player.body.velocity.y = -this.player.maxVelocityY;
         }
     },
 
-    BossAttack: function () {
-        bosses.forEach(function (boss) {
+    BossAttack: function ()
+    {
+        bosses.forEach(function (boss)
+        {
             if (bossAttacked == true)
             {
                 if (boss.body.onFloor())
                 {
-                    if (this.player.x < boss.x) {
+                    if (this.player.x < boss.x)
+                    {
                         bossSpeed = -150;
                         boss.scale.x = 1;
                     }
-                    else if (this.player.x > boss.x) {
+                    else if (this.player.x > boss.x)
+                    {
                         bossSpeed = 150;
                         boss.scale.x = -1;
                     }
@@ -661,6 +699,7 @@ this);
             boss.body.bounce.set(1);
             if (Phaser.Math.distance(this.player.x, this.player.y, boss.x, boss.y) <= 400 && boss.body.velocity.x == 0)
             {
+                //detta körs när spelaren går nära boss
                 bossAttacked = true;
                 boss.body.velocity.y = -300;
                 
@@ -673,12 +712,14 @@ this);
 
     BatFlying: function()
     {
-        bats.forEach(function (bat) {
+        bats.forEach(function (bat)
+        {
 
-
+            ///bats studsar på väggen.
             bat.body.bounce.set(1);
             if (Phaser.Math.distance(this.player.x, this.player.y, bat.x, bat.y) <= 200 && bat.body.velocity.y == 0 && bat.body.velocity.x == 0)
             {
+                //detta körs när spelaren går nära bats
                 bat.animations.play('fly')
                 bat.body.velocity.y = this.game.rnd.integerInRange(-100, 100);
                 bat.body.velocity.x = this.game.rnd.integerInRange(-100, 100);
@@ -695,6 +736,8 @@ this);
 
     update: function ()
     {
+
+        //UPPDATERAR FILTER FÖR DIVERSE BANA//
         if (level == 1)
             filter1.update();
         else if (level == 2)
@@ -736,12 +779,13 @@ this);
         
         function killThis(weapon, object)
         {
+            //dödar ett objekt
             weapon.kill();
         }
 
         function endLevel(player, endpos)
         {
-            
+            //körs i slutet av banor
             music.pause();
             if (level == 3)
             {
@@ -762,13 +806,14 @@ this);
 
         function dealDmg(weapon, enemy)
         {
+            //skadar en fiende med liv, ger poäng//ADAM fix 2015-05-22
             enemy.HP--;
             weapon.kill();
 
             if (enemy.HP == 0)
             {
                 enemy.kill();
-                score = score + 150;
+                score = score + enemy.score;
                 scoreText.text = 'Score:' + score;
             }
 
@@ -779,6 +824,7 @@ this);
         function killEnemy(weapon, enemy)
         {
             enemy.kill();
+            //ger 15 poäng och dödar fiende//
             score = score + 15;
             scoreText.text = 'Score:' + score;
             
@@ -793,9 +839,10 @@ this);
             
             var live = lives.getFirstAlive();
 
-            if (live) {
+            if (live)
+            {
                 live.kill();
-                //spelaren dör dirket// adam
+                //spelaren dör direkt// adam
                 this.player.health = 0;
                  
             }
@@ -807,7 +854,7 @@ this);
 
         if (this.player.health <= 0)
         {
-
+            //gameover körs när man dör
             this.game.state.start("GameOver",true,false, score);
             music.pause();
             score = 0;
@@ -838,7 +885,8 @@ this);
 
         }
 
-        function collectGranade(player, pickup) {
+        function collectGranade(player, pickup)
+        {
             //ta bort
             pickup.kill();
 
@@ -847,7 +895,8 @@ this);
             granadeText.text = 'Granade:' + granadeCount;
         }
 
-        function collectShuriken(player, item) {
+        function collectShuriken(player, item)
+        {
             // ADAM 2015-04-19
             //tar bort item
             item.kill();
@@ -855,7 +904,8 @@ this);
             shurikenText.text = 'Shurikens:' + shurikenCount;
         }
 
-        function collectfood(player, food) {
+        function collectfood(player, food)
+        {
             //ta bort
             food.kill();
 
@@ -883,22 +933,27 @@ this);
 
         }
 
-
-        lavasbot.forEach(function (lava) {
+        //det finns 2 lavatyper en för toppen och en för botten.
+        lavasbot.forEach(function (lava)
+        {
             lava.animations.play('moving');
         },
         this);
-        lavastop.forEach(function (lava) {
+        lavastop.forEach(function (lava)
+        {
             lava.animations.play('moving');
 
         },
         this);
 
-        fireballs.forEach(function (fireball) {
+        //körs för varje eldboll //adam
+        fireballs.forEach(function (fireball)
+        {
             fireball.anchor.setTo(0.5, 0.5);
             fireball.body.gravity.y = 600;
             fireball.body.velocity.x = 0;
            
+            //dom bytar håll beroende på hastighet
             if (fireball.body.velocity.y > 0)
             {
                 fireball.scale.y = -1
@@ -909,6 +964,7 @@ this);
 
             if (fireball.body.touching.down)
             {
+                //hastighet i y sätts till radom värde mellan ett interval. //adam 
                 fireball.body.velocity.y = -(this.game.rnd.integerInRange(500, 600));
             }
 
@@ -917,7 +973,8 @@ this);
         this);
 
         //WB shurikenFIX// adam 2015-05-12
-        weaponShurikens.forEach(function (shuriken) {
+        weaponShurikens.forEach(function (shuriken)
+        {
 
             if (shuriken.body.velocity.x == 0)
                 shuriken.kill();
@@ -925,9 +982,11 @@ this);
         this);
 
 
-        crates.forEach(function (crate) {
+        crates.forEach(function (crate)
+        {
             crate.body.gravity.y = 400;
 
+            //detta gör så man kan putta på lådor// adam
             if (crate.body.touching.left == false || crate.body.touching.right == false)
             {                
                 crate.body.velocity.x = 0;
@@ -939,6 +998,7 @@ this);
 
         platforms.forEach(function (platform)
         {
+            //platformar ska inte vara beroende av annat så ....
             platform.body.immovable = true;
             platform.body.allowGravity = false;
             platform.body.collideWorldBounds = true;
