@@ -1,0 +1,53 @@
+﻿@{
+    //Author: Angelica Shirazi
+}
+@{
+    //Access file containing highscore
+    ViewBag.Title = "Index";
+    var result = "";
+    Array userdata = null;
+    char[] delimiterChar = { ',' };
+
+    var data = Server.MapPath("~/App_Data/hscore.txt");
+
+    if (File.Exists(data))
+    {
+        userdata = File.ReadAllLines(data);
+        if (userdata == null)
+        {
+            // Empty file.
+            result = "The file is empty.";
+        }
+    }
+    else
+    {
+        // File does not exist.
+        result = "The file does not exist.";
+    }
+}
+@{
+    ViewBag.Title = "Highscores";
+}
+
+<h2>Highscores</h2>
+
+@result
+@if (result == "")
+{
+    <ol>
+        @{//Writes all the data in the file
+          }
+        @foreach (string dataLine in userdata)
+        {
+            <li>
+                User
+                <ul>
+                    @foreach (string dataItem in dataLine.Split(delimiterChar))
+                    {
+                        <li>@dataItem</li>
+                    }
+                </ul>
+            </li>
+        }
+    </ol>
+}

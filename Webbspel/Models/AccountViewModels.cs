@@ -1,9 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿//Author: Ludwig Fingal
+using System.ComponentModel.DataAnnotations;
 
 namespace Webbspel.Models
 {
 
     public class ManageUserViewModel
+        //Model for managing user
     {
         [Required]
         [DataType(DataType.Password)]
@@ -23,6 +25,7 @@ namespace Webbspel.Models
     }
 
     public class LoginViewModel
+        //Model for login
     {
         [Required]
         [Display(Name = "User name")]
@@ -38,6 +41,7 @@ namespace Webbspel.Models
     }
 
     public class RegisterViewModel
+        //Model for registering
     {
         [Required]
         [Display(Name = "User name")]

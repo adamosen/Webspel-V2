@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
+﻿//Author: Ludwig Fingal
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Webbspel.Models
 {

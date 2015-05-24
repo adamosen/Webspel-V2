@@ -365,6 +365,7 @@
     <Content Include="Views\Account\_RemoveAccountPartial.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Highscore\Highscoreview.cshtml" />
+    <Content Include="Views\Highscore\Highscores.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

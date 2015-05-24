@@ -1,4 +1,5 @@
-﻿using System;
+﻿//Author: Ludwig Fingal
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -38,6 +39,7 @@ namespace Webbspel.Controllers
 
         //
         // POST: /Account/Login
+        //Checks if username and password match
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -71,6 +73,7 @@ namespace Webbspel.Controllers
 
         //
         // POST: /Account/Register
+        //Adds a new user
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -97,12 +100,12 @@ namespace Webbspel.Controllers
 
         //
         // GET: /Account/Manage
+        //Lets the user change password
         public ActionResult Manage(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
                 message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
                 : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
-                : message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
                 : message == ManageMessageId.Error ? "An error has occurred."
                 : "";
             ViewBag.HasLocalPassword = HasPassword();
@@ -112,6 +115,7 @@ namespace Webbspel.Controllers
 
         //
         // POST: /Account/Manage
+        //POSTs the new password
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Manage(ManageUserViewModel model)
@@ -164,6 +168,7 @@ namespace Webbspel.Controllers
 
         //
         // POST: /Account/LogOff
+        //Logs off the user
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()

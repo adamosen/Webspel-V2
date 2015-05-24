@@ -1,4 +1,7 @@
-﻿<div id="phaser-game">
+﻿@{
+    //Author: Ludwig Fingal and Adam Andersson
+}
+<div id="phaser-game">
     @Scripts.Render("~/Scripts/phaser.min.js")
     @Scripts.Render("~/Scripts/src/boot.js")
     @Scripts.Render("~/Scripts/src/preload.js")
@@ -7,24 +10,4 @@
     @Scripts.Render("~/Scripts/src/gameover.js")
     @Scripts.Render("~/Scripts/src/gamewon.js")
     @Scripts.Render("~/Scripts/src/createGame.js")
-    @*<script src="~/Scripts/phaser.min.js"></script>
-    <script src="~/Scripts/src/boot.js"></script>
-    <script src="~/Scripts/src/preload.js"></script>
-    <script src="~/Scripts/src/gametitle.js"></script>
-    <script src="~/Scripts/src/thegame.js"></script>
-    <script src="~/Scripts/src/gameover.js"></script>
-    <script src="~/Scripts/src/gamewon.js"></script>
-    <script>
-        (function () {
-            var game = new Phaser.Game(800, 600, Phaser.CANVAS_FILTER, "game");
-            game.state.add("Boot", boot);
-            game.state.add("Preload", preload);
-            game.state.add("GameTitle", gameTitle);
-            game.state.add("TheGame", theGame);
-            game.state.add("GameOver", gameOver);
-            game.state.add("Win", win);
-            game.state.start("Boot");
-        })();
-    </script>*@
-    @*@Scripts.Render("~/Scripts/game1.js")*@
 </div>
