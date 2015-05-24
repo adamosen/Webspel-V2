@@ -141,7 +141,7 @@ theGame.prototype = {
         //physics+bgcolor //ADAM
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
         this.game.stage.backgroundColor = '#000000';
-
+        this.game.input.touch.preventDefault = false;
 
 
         //Sätter in bakgrundsfiltert//ADAM
@@ -199,6 +199,10 @@ theGame.prototype = {
         //Music
         music.play('', 0, 1, true);
         music.onLoop.add(this.playLevelMusic, this);
+        //Höjer volymen
+        this.game.input.onDown.add(function (pointer) { if (pointer.y < 300) music.volume += 0.1; }, this);
+        //Sänker volymen
+        this.game.input.onDown.add(function (pointer) { if (pointer.y > 300) music.volume -= 0.1; }, this);
         
         //DATA SOM BEHÖVS TILL MAPS//
         map.addTilesetImage('tiles2');
