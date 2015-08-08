@@ -200,9 +200,9 @@ theGame.prototype = {
         music.play('', 0, 1, true);
         music.onLoop.add(this.playLevelMusic, this);
         //Höjer volymen
-        this.game.input.onDown.add(function (pointer) { if (pointer.y < 300) music.volume += 0.1; }, this);
-        //Sänker volymen
-        this.game.input.onDown.add(function (pointer) { if (pointer.y > 300) music.volume -= 0.1; }, this);
+        //this.game.input.onDown.add(function (pointer) { if (pointer.y < 300) music.volume += 0.1; }, this);
+        ////Sänker volymen
+        //this.game.input.onDown.add(function (pointer) { if (pointer.y > 300) music.volume -= 0.1; }, this);
         
         //DATA SOM BEHÖVS TILL MAPS//
         map.addTilesetImage('tiles2');
@@ -526,11 +526,13 @@ this);
 
     tossGranade: function ()
     {
-        //  så att man inte kan kasta för fort finns den en tidsbegränsning...
+        //TESTRAPPORT ADAM//
+
+        //KRAV 2//  timern håller tiden just nu + tiden man ska vänta. Granaten kan enbart skapas en tid efter en har skapats.//
         if (this.game.time.now > grandeTimer && granadeCount > 0)
         {
             
-            //skapar en granat//
+            //KRAV 1//Skapar en granat//
             weaponGranade = weaponGranades.create(0, 0, 'items1', 2);
 
             
@@ -538,12 +540,13 @@ this);
             {
                 weaponGranade.anchor.setTo(0.5, 0.5);
 
+                //KRAV 3// denna eventtimer gör så att när en granat skapats kommer den inre metoden köras 3 sekunder efter denna, då exploderar granaten.
                 this.game.time.events.add(Phaser.Timer.SECOND * 3, function ()
                 {
                     
                     justPressed = false;
                     bats.forEach(function (bat) {
-                        ///dom dödar bats///
+                        //KRAV 4// om bats finns inom en viss radie tas de bort.
                         if (Phaser.Math.distance(weaponGranade.x, weaponGranade.y, bat.x, bat.y) <= 150)
                         {
                             bat.kill();
@@ -555,7 +558,7 @@ this);
 
                     bosses.forEach(function (b)
                     {
-                        ///dom dödar bossar///
+                        //dom dödar även bossar//
                         if (Phaser.Math.distance(weaponGranade.x, weaponGranade.y, b.x, b.y) <= 150)
                         {
                             b.kill();
@@ -564,7 +567,7 @@ this);
 
                     },
 this);
-
+                    //KRAV 5// Skapar en explosion efter granaten sprängs på granatens position//
                     var boom = booms.create(weaponGranade.body.x, weaponGranade.body.y, "boom");
                     boom.anchor.setTo(0.5, 0.5);
                     boom.scale.set(4, 4);
@@ -589,12 +592,13 @@ this);
 
             
             if (weaponGranade)
-            {                
+            {
+                //KRAV 6// Dessa tilldelar olika egenskaper till varje granat//
                 weaponGranade.allowRotation = true;
                 weaponGranade.body.gravity.y = 400;
                 weaponGranade.body.bounce.set(0.5);
 
-             //  Kastar granat
+                //KRAV 7// Granaten kommer kastas i samma rikning som spelaren står//
                 weaponGranade.reset(this.player.x, this.player.y + 1);
                 if (this.player.scale.x == 1)
                 {
@@ -1098,7 +1102,7 @@ this);
         "pos.x *= a;",
 
         "// perlin_noise",
-        "vec2 pos_ = pos + time * 0.09;",
+        "vec2 pos_ = pos + time * 0.03;",
         "float seed = 0.0;",
         "float freq_start = 1.5;",
         "float amp_start = 1.0;",
@@ -1107,11 +1111,11 @@ this);
 
    " #if 1",
         "// smoke",
-        "gl_FragColor = vec4(pn * 1.0, pn * 1.0, pn * 0.8, 1.0);",
+        "gl_FragColor = vec4(pn * 3.0, pn * 1.0, pn * 0.8, 1.0);",
     "#else",
         "// dizzy!!!",
-        "pn = fract(pn * 8.0 + sin(time));",
-        "gl_FragColor = vec4(pn * 2.0, pn * 1.0, pn * 0.2, 1.0);",
+        "pn = fract(pn * 12.0 + sin(time));",
+        "gl_FragColor = vec4(pn * 2.0, pn * 2.0, pn * 0.8, 1.0);",
     "#endif",
     "}",
     ];
